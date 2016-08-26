@@ -9,8 +9,9 @@ make.basemap(df = NULL, auto.setlimits = F, x.limits = c(-70, -54),
   "Vazella_Sambro", "Lophelia", "NE_Channel"), crs.out = "+init=epsg:2220")
 }
 \arguments{
-\item{\code{df}}{default is \code{NULL}.  You can optionally send a dataframe to this function, which can be used in conjunction with
-\code{auto.setlimits} to automatically set the map extent.}
+\item{\code{df}}{default is \code{NULL}.  You can optionally send a dataframe to this function, which can be used in conjunction with}
+
+\item{\code{auto.setlimits}}{to automatically set the map extent.}
 
 \item{\code{auto.setlimits}}{default is \code{F}. This controls the extent of the resultant map.  If \code{T} (and a data frame with values for \code{LATITUDE} and \code{LONGITUDE} has been sent), it will use the data to determine the plot boundaries (plus a 10% padding factor).}
 
@@ -34,5 +35,10 @@ Bathymetry will be added to this in the near future, and the function call will 
 .
 using the clipped data (pre-projection), capture information for the grid,
 including information about the gridlines, as well as their labels
+}
+\seealso{
+Other plotting: \code{\link{add.points}},
+  \code{\link{get.DFO.areas.musquash}},
+  \code{\link{get.DFO.areas}}
 }
 

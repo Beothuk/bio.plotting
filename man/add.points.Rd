@@ -35,7 +35,7 @@ acceptable)}
 a data frame 'allCatchInfo'
 }
 \description{
-T
+This function adds points to an existing plot.  Data is symbolized by a selected field, and a legend can be drawn
 }
 \examples{
  add.points(df, map, lat.field='LAT', lon.field='LON', plot.field='WEIGHT_SMOOTHED', plot.field.pretty='WEIGHT', classes=10, cexMax=1.5)
@@ -45,6 +45,6 @@ Mike McMahon, \email{Mike.McMahon@dfo-mpo.gc.ca}
 }
 \seealso{
 Other plotting: \code{\link{get.DFO.areas.musquash}},
-  \code{\link{get.DFO.areas}}
+  \code{\link{get.DFO.areas}}, \code{\link{make.basemap}}
 }
 

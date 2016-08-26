@@ -1,7 +1,7 @@
 #' @title make.basemap
 #' @description This function creates a simple basemap on which to plot data.  The plot consists of a (filled) coastline, with a labelled lat-lon grid.  DFO Marine areas can be also be added.  No local GIS files are used.
 #' @param \code{df} default is \code{NULL}.  You can optionally send a dataframe to this function, which can be used in conjunction with
-#' \code{auto.setlimits} to automatically set the map extent.
+#' @param \code{auto.setlimits} to automatically set the map extent.
 #' @param \code{auto.setlimits} default is \code{F}. This controls the extent of the resultant map.  If \code{T} (and a data frame with values for \code{LATITUDE} and \code{LONGITUDE} has been sent), it will use the data to determine the plot boundaries (plus a 10% padding factor).
 #' @param \code{x.limits} default is \code{c(-70,-54)}. Default longitudes for extent.
 #' @param \code{y.limits} default is \code{c(41,50)}. Default latitudes for extent.
@@ -9,6 +9,7 @@
 #' @param \code{crs.out} default is \code{"+init=epsg:2220"} (UTM Zone 20 N).  This is the desired projection of the final plot.  
 #' @return a SpatialPolygons object corresponding to the bounding box of the plot.  
 #' @note Bathymetry will be added to this in the near future, and the function call will be modified to include a flag that will indicate whether or not it should be plotted.  Many values are possible and/or appropriate for the value of \code{crs.out}, depending on the data. Check \code{\link{http://spatialreference.org/ref/epsg/}} for more options.
+#' @family plotting
 #' @export
 #' @note .
 make.basemap = function(df=NULL, auto.setlimits=F, x.limits=c(-70,-54), y.limits=c(41,50),

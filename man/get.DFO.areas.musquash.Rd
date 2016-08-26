@@ -29,6 +29,6 @@ Mike McMahon, \email{Mike.McMahon@dfo-mpo.gc.ca}
 }
 \seealso{
 Other plotting: \code{\link{add.points}},
-  \code{\link{get.DFO.areas}}
+  \code{\link{get.DFO.areas}}, \code{\link{make.basemap}}
 }
 

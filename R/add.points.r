@@ -1,5 +1,5 @@
 #' @title add.points
-#' @description T
+#' @description This function adds points to an existing plot.  Data is symbolized by a selected field, and a legend can be drawn
 #' @param \code{df} the data to be aggregated
 #' @param \code{basemap.Info} a SpatialPolygons object (identifying the boundaries and projection of an existing plot)
 #' @param \code{lat.field} the default is \code{'LATITUDE'}. the name of the field holding latitude values (in decimal degrees)
