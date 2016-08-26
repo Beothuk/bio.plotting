@@ -12,41 +12,23 @@ make.basemap(df = NULL, auto.setlimits = F, x.limits = c(-70, -54),
 \item{\code{df}}{default is \code{NULL}.  You can optionally send a dataframe to this function, which can be used in conjunction with
 \code{auto.setlimits} to automatically set the map extent.}
 
-\item{\code{auto.setlimits}}{default is \code{F}. This controls the extent of the resultant map.  If \code{T} (and a data frame with 
-values for \code{LATITUDE} and \code{LONGITUDE} has been sent), it will use the data to determine the plot boundaries (plus a 10% padding
-factor).}
+\item{\code{auto.setlimits}}{default is \code{F}. This controls the extent of the resultant map.  If \code{T} (and a data frame with values for \code{LATITUDE} and \code{LONGITUDE} has been sent), it will use the data to determine the plot boundaries (plus a 10% padding factor).}
 
 \item{\code{x.limits}}{default is \code{c(-70,-54)}. Default longitudes for extent.}
 
 \item{\code{y.limits}}{default is \code{c(41,50)}. Default latitudes for extent.}
 
-\item{\code{add.DFO}}{default is \code{c("St_Ann","Gully","Vazella_Emerald","Vazella_Sambro","Lophelia", "NE_Channel")}.  This is a 
-vector of DFO areas that should be added to the plot.}
+\item{\code{add.DFO}}{default is \code{c("St_Ann","Gully","Vazella_Emerald","Vazella_Sambro","Lophelia", "NE_Channel")}.}
 
-\item{\code{crs.out}}{default is \code{"+init=epsg:2220"} (UTM Zone 20 N).  This is the desired projection of the final plot.  Many 
-values are possible and/or appropriate, depending on the data. Check \code{\link{http://spatialreference.org/ref/epsg/}} for more 
-options.}
+\item{\code{crs.out}}{default is \code{"+init=epsg:2220"} (UTM Zone 20 N).  This is the desired projection of the final plot.}
 }
 \value{
-a SpatialPolygons object corresponding to the bounding box of the plot.  This contains information about the extend and 
-projection of the plot, and facilitates the addition of more data.
+a SpatialPolygons object corresponding to the bounding box of the plot.
 }
 \description{
-This function creates a simple basemap on which to plot data.  The plot consists of a (filled) coastline, with a labelled 
-lat-lon grid.  DFO Marine areas can be also be added.  No local GIS files are used.
+This function creates a simple basemap on which to plot data.  The plot consists of a (filled) coastline, with a labelled lat-lon grid.  DFO Marine areas can be also be added.  No local GIS files are used.
 }
 \note{
-Bathymetry will be added to this in the near future, and the function call will be modified to include a flag that will indicate 
-whether or not it should be plotted.
-}
-\examples{
-make.basemap()
-}
-\author{
-Mike McMahon, \email{Mike.McMahon@dfo-mpo.gc.ca}
-}
-\seealso{
-Other plotting: \code{\link{add.points}},
-  \code{\link{get.DFO.areas}}
+Bathymetry will be added to this in the near future, and the function call will be modified to include a flag that will indicate whether or not it should be plotted.  Many values are possible and/or appropriate for the value of \code{crs.out}, depending on the data. Check \code{\link{http://spatialreference.org/ref/epsg/}} for more options.
 }
 

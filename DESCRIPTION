@@ -1,9 +1,8 @@
-Package: bio.template
-Title: Package that interacts with bio and associated projects to ...
+Package: bio.plotting
+Title: Package that interacts with bio to facilitate the presentation of spatial data
 Version: 0.1
-Authors@R: c( person("Firstname", "Lastname", email="xxx@xxx.xxx", role=c("aut", "cre")) )
-Description: This project interacts with the functionality of bio
-    to do something very special ...
+Authors@R: c( person("Mike", "McMahon", email="Mike.McMahon@dfo-mpo.gc.ca", role=c("aut", "cre")) )
+Description: This project interacts with the functionality of bio to facilitate the presentation of spatial data
 Depends:
     R (>= 3.0.0)
 Imports:
@@ -15,5 +14,5 @@ Suggests:
 VignetteBuilder: knitr
 License: MIT
 LazyData: true
-URL: https://github.com/Beothuk/bio.template/
+URL: https://github.com/Beothuk/bio.plotting/
 RoxygenNote: 5.0.1

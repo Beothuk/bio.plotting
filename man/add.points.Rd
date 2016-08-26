@@ -44,7 +44,6 @@ T
 Mike McMahon, \email{Mike.McMahon@dfo-mpo.gc.ca}
 }
 \seealso{
-Other plotting: \code{\link{get.DFO.areas}},
-  \code{\link{make.basemap}}
+Other plotting: \code{\link{get.DFO.areas}}
 }
 

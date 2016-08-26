@@ -44,7 +44,6 @@ Musquash is a very complex area, and has a separate function has not been enable
 Mike McMahon, \email{Mike.McMahon@dfo-mpo.gc.ca}
 }
 \seealso{
-Other plotting: \code{\link{add.points}},
-  \code{\link{make.basemap}}
+Other plotting: \code{\link{add.points}}
 }
 

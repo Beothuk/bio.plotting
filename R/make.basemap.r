@@ -1,29 +1,19 @@
 #' @title make.basemap
-#' @description This function creates a simple basemap on which to plot data.  The plot consists of a (filled) coastline, with a labelled 
-#' lat-lon grid.  DFO Marine areas can be also be added.  No local GIS files are used.
+#' @description This function creates a simple basemap on which to plot data.  The plot consists of a (filled) coastline, with a labelled lat-lon grid.  DFO Marine areas can be also be added.  No local GIS files are used.
 #' @param \code{df} default is \code{NULL}.  You can optionally send a dataframe to this function, which can be used in conjunction with
 #' \code{auto.setlimits} to automatically set the map extent.
-#' @param \code{auto.setlimits} default is \code{F}. This controls the extent of the resultant map.  If \code{T} (and a data frame with 
-#' values for \code{LATITUDE} and \code{LONGITUDE} has been sent), it will use the data to determine the plot boundaries (plus a 10% padding
-#' factor).
+#' @param \code{auto.setlimits} default is \code{F}. This controls the extent of the resultant map.  If \code{T} (and a data frame with values for \code{LATITUDE} and \code{LONGITUDE} has been sent), it will use the data to determine the plot boundaries (plus a 10% padding factor).
 #' @param \code{x.limits} default is \code{c(-70,-54)}. Default longitudes for extent.
 #' @param \code{y.limits} default is \code{c(41,50)}. Default latitudes for extent.
-#' @param \code{add.DFO} default is \code{c("St_Ann","Gully","Vazella_Emerald","Vazella_Sambro","Lophelia", "NE_Channel")}.  This is a 
-#' vector of DFO areas that should be added to the plot. 
-#' @param \code{crs.out} default is \code{"+init=epsg:2220"} (UTM Zone 20 N).  This is the desired projection of the final plot.  Many 
-#' values are possible and/or appropriate, depending on the data. Check \code{\link{http://spatialreference.org/ref/epsg/}} for more 
-#' options.
-#' @note Bathymetry will be added to this in the near future, and the function call will be modified to include a flag that will indicate 
-#' whether or not it should be plotted.
-#' @return a SpatialPolygons object corresponding to the bounding box of the plot.  This contains information about the extend and 
-#' projection of the plot, and facilitates the addition of more data.
-#' @author  Mike McMahon, \email{Mike.McMahon@@dfo-mpo.gc.ca}
-#' @family plotting
-#' @examples make.basemap()
+#' @param \code{add.DFO} default is \code{c("St_Ann","Gully","Vazella_Emerald","Vazella_Sambro","Lophelia", "NE_Channel")}.  
+#' @param \code{crs.out} default is \code{"+init=epsg:2220"} (UTM Zone 20 N).  This is the desired projection of the final plot.  
+#' @note Bathymetry will be added to this in the near future, and the function call will be modified to include a flag that will indicate whether or not it should be plotted.  Many values are possible and/or appropriate for the value of \code{crs.out}, depending on the data. Check \code{\link{http://spatialreference.org/ref/epsg/}} for more options.
+#' @return a SpatialPolygons object corresponding to the bounding box of the plot.  
 #' @export
 make.basemap = function(df=NULL, auto.setlimits=F, x.limits=c(-70,-54), y.limits=c(41,50),
                          add.DFO = c("St_Ann","Gully","Vazella_Emerald","Vazella_Sambro","Lophelia", "NE_Channel"),
                          crs.out="+init=epsg:2220"){
+  
   require(sp)       #Polygon/coordinates
   require(rgeos)    #gintersection
   require(maptools) #map2spatialpolygons
@@ -70,7 +60,7 @@ make.basemap = function(df=NULL, auto.setlimits=F, x.limits=c(-70,-54), y.limits
   
   
   #get the desired DFO areas
-  if (length(add.DFO)>0) DFO.areas=get.ocmd.areas(add.DFO)
+  if (length(add.DFO)>0) DFO.areas=get.DFO.areas(add.DFO)
   
   par(mar=c(2,2,1,1),xaxs = "i",yaxs = "i",cex.axis=1.3,cex.lab=1.4)
   plot(boundbox2.pr, border="transparent", add=F, lwd=1) #add transparent boundbox first to ensure all data shown
