@@ -30,5 +30,9 @@ This function creates a simple basemap on which to plot data.  The plot consists
 }
 \note{
 Bathymetry will be added to this in the near future, and the function call will be modified to include a flag that will indicate whether or not it should be plotted.  Many values are possible and/or appropriate for the value of \code{crs.out}, depending on the data. Check \code{\link{http://spatialreference.org/ref/epsg/}} for more options.
+
+.
+using the clipped data (pre-projection), capture information for the grid,
+including information about the gridlines, as well as their labels
 }
 

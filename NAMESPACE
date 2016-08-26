@@ -2,3 +2,4 @@
 
 export(add.points)
 export(get.DFO.areas)
+export(make.basemap)

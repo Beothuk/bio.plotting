@@ -7,9 +7,10 @@
 #' @param \code{y.limits} default is \code{c(41,50)}. Default latitudes for extent.
 #' @param \code{add.DFO} default is \code{c("St_Ann","Gully","Vazella_Emerald","Vazella_Sambro","Lophelia", "NE_Channel")}.  
 #' @param \code{crs.out} default is \code{"+init=epsg:2220"} (UTM Zone 20 N).  This is the desired projection of the final plot.  
-#' @note Bathymetry will be added to this in the near future, and the function call will be modified to include a flag that will indicate whether or not it should be plotted.  Many values are possible and/or appropriate for the value of \code{crs.out}, depending on the data. Check \code{\link{http://spatialreference.org/ref/epsg/}} for more options.
 #' @return a SpatialPolygons object corresponding to the bounding box of the plot.  
+#' @note Bathymetry will be added to this in the near future, and the function call will be modified to include a flag that will indicate whether or not it should be plotted.  Many values are possible and/or appropriate for the value of \code{crs.out}, depending on the data. Check \code{\link{http://spatialreference.org/ref/epsg/}} for more options.
 #' @export
+#' @note .
 make.basemap = function(df=NULL, auto.setlimits=F, x.limits=c(-70,-54), y.limits=c(41,50),
                          add.DFO = c("St_Ann","Gully","Vazella_Emerald","Vazella_Sambro","Lophelia", "NE_Channel"),
                          crs.out="+init=epsg:2220"){
