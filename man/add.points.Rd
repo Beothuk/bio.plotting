@@ -44,6 +44,7 @@ T
 Mike McMahon, \email{Mike.McMahon@dfo-mpo.gc.ca}
 }
 \seealso{
-Other plotting: \code{\link{get.DFO.areas}}
+Other plotting: \code{\link{get.DFO.areas.musquash}},
+  \code{\link{get.DFO.areas}}
 }
 
