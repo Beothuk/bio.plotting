@@ -50,9 +50,23 @@ make.basemap = function(df=NULL, auto.setlimits=F, x.limits=c(-70,-54), y.limits
   
   #'using the clipped data (pre-projection), capture information for the grid,
   #'including information about the gridlines, as well as their labels
-  the.grid = gridat(boundbox, easts=seq(boundbox@"bbox"[1],boundbox@"bbox"[3],by=2), norths=seq(boundbox@"bbox"[2],boundbox@"bbox"[4],by=2))
+  #'
+  #'the hack below helps in cases where the data results in a map less than 1deg by 1 deg - in which case, the gridlines and labels need to 
+  #'be more frequent
+  #'by1 and by2 relate to the gridline labels
+  #'by1_1 and by2_1 relate to the gridlines themselves
+  if (boundbox@"bbox"[3] - boundbox@"bbox"[1] < 2){
+    by1=0.5
+    by1_1=0.25
+  }
+  if (boundbox@"bbox"[4] - boundbox@"bbox"[2] < 2){
+    by2=0.5
+    by2_1=0.25
+  }
+
+  the.grid = gridat(boundbox, easts=seq(boundbox@"bbox"[1],boundbox@"bbox"[3],by=by1), norths=seq(boundbox@"bbox"[2],boundbox@"bbox"[4],by=by2))
   grid.pr = spTransform(the.grid, CRS(crs.out))
-  these.gridlines = gridlines(boundbox, easts=seq(boundbox@"bbox"[1],boundbox@"bbox"[3],by=1), norths=seq(boundbox@"bbox"[2],boundbox@"bbox"[4],by=1))
+  these.gridlines = gridlines(boundbox, easts=seq(boundbox@"bbox"[1],boundbox@"bbox"[3],by=by1_1), norths=seq(boundbox@"bbox"[2],boundbox@"bbox"[4],by=by2_1))
   these.gridlines.pr = spTransform(these.gridlines, CRS(crs.out))
   
   coastline = map( "worldHires", regions=c("Canada","USA", "Greenland"), xlim=x.limits,ylim=y.limits, col="blue", fill=T, plot=F, resolution=0) 
@@ -66,7 +80,7 @@ make.basemap = function(df=NULL, auto.setlimits=F, x.limits=c(-70,-54), y.limits
   
   par(mar=c(2,2,1,1),xaxs = "i",yaxs = "i",cex.axis=1.3,cex.lab=1.4)
   plot(boundbox2.pr, border="transparent", add=F, lwd=1) #add transparent boundbox first to ensure all data shown
-  plot(coastline.sp.clip, col="navajowhite2", border="navajowhite4", lwd=0.5, axes=F, add=T )  #add coastline
+  plot(coastline.sp.clip, col="navajowhite2", border="navajowshite4", lwd=0.5, axes=F, add=T )  #add coastline
   for (o in 1:length(DFO.areas)){
     plot(gIntersection(gBuffer(spTransform(DFO.areas[[o]], CRS(crs.out)), byid=TRUE, width=0), spTransform(boundbox,CRS( crs.out ))), border="olivedrab4", lwd=0.5, add=T)
   }
