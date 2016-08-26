@@ -80,7 +80,7 @@ make.basemap = function(df=NULL, auto.setlimits=F, x.limits=c(-70,-54), y.limits
   
   par(mar=c(2,2,1,1),xaxs = "i",yaxs = "i",cex.axis=1.3,cex.lab=1.4)
   plot(boundbox2.pr, border="transparent", add=F, lwd=1) #add transparent boundbox first to ensure all data shown
-  plot(coastline.sp.clip, col="navajowhite2", border="navajowshite4", lwd=0.5, axes=F, add=T )  #add coastline
+  plot(coastline.sp.clip, col="navajowhite2", border="navajowhite4", lwd=0.5, axes=F, add=T )  #add coastline
   for (o in 1:length(DFO.areas)){
     plot(gIntersection(gBuffer(spTransform(DFO.areas[[o]], CRS(crs.out)), byid=TRUE, width=0), spTransform(boundbox,CRS( crs.out ))), border="olivedrab4", lwd=0.5, add=T)
   }
