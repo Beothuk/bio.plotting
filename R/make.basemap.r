@@ -55,6 +55,10 @@ make.basemap = function(df=NULL, auto.setlimits=F, x.limits=c(-70,-54), y.limits
   #'be more frequent
   #'by1 and by2 relate to the gridline labels
   #'by1_1 and by2_1 relate to the gridlines themselves
+  by1=1
+  by1_1=0.5
+  by2=1
+  by2_1=0.5
   if (boundbox@"bbox"[3] - boundbox@"bbox"[1] < 2){
     by1=0.5
     by1_1=0.25
