@@ -12,14 +12,22 @@
 #' @family plotting
 #' @export
 #' @note .
-make.basemap = function(df=NULL, auto.setlimits=F, x.limits=c(-70,-54), y.limits=c(41,50),
-                         add.DFO = c("St_Ann","Gully","Vazella_Emerald","Vazella_Sambro","Lophelia", "NE_Channel"),
-                         crs.out="+init=epsg:2220"){
+make.basemap = function(df=NULL){
+
+  p.plotting = bio.plotting::load.environment()
   
-  require(sp)       #Polygon/coordinates
-  require(rgeos)    #gintersection
-  require(maptools) #map2spatialpolygons
-  require(mapdata) 
+    auto.setlimits = p.plotting$auto.setlimits
+    x.limits = p.plotting$x.limits
+    y.limits = p.plotting$y.limits
+    add.DFO = p.plotting$add.DFO
+    crs.out = p.plotting$crs.out
+    DFO.areas = p.plotting$DFO.areas
+    DFO.detailed = p.plotting$DFO.detailed
+  
+  # require(sp)       #Polygon/coordinates
+  # require(rgeos)    #gintersection
+  # require(maptools) #map2spatialpolygons
+  # require(mapdata) 
   
   crs.in="+init=epsg:4326"
   
@@ -28,7 +36,6 @@ make.basemap = function(df=NULL, auto.setlimits=F, x.limits=c(-70,-54), y.limits
     x.limits = round(extendrange(range(df$LONGITUDE), f=0.10)/1)*1
     y.limits = round(extendrange(range(df$LATITUDE), f=0.10)/1)*1
   }
-  
   
   limits = data.frame(X = x.limits, Y = y.limits) 
   coordinates(limits) = c("X", "Y")
@@ -79,14 +86,18 @@ make.basemap = function(df=NULL, auto.setlimits=F, x.limits=c(-70,-54), y.limits
   coastline.sp.clip = gIntersection(gBuffer(coastline.sp, byid=TRUE, width=0), spTransform(boundbox,CRS( crs.out )))
   
   
-  #get the desired DFO areas
-  if (length(add.DFO)>0) DFO.areas=get.DFO.areas(add.DFO)
-  
+
   par(mar=c(2,2,1,1),xaxs = "i",yaxs = "i",cex.axis=1.3,cex.lab=1.4)
+
   plot(boundbox2.pr, border="transparent", add=F, lwd=1) #add transparent boundbox first to ensure all data shown
   plot(coastline.sp.clip, col="navajowhite2", border="navajowhite4", lwd=0.5, axes=F, add=T )  #add coastline
-  for (o in 1:length(DFO.areas)){
-    plot(gIntersection(gBuffer(spTransform(DFO.areas[[o]], CRS(crs.out)), byid=TRUE, width=0), spTransform(boundbox,CRS( crs.out ))), border="olivedrab4", lwd=0.5, add=T)
+  
+  #get the desired DFO areas
+  if (length(DFO.areas>0)) {
+    DFO.areas=get.DFO.areas(DFO.areas, DFO.detailed)
+    for (o in 1:length(DFO.areas)){
+      plot(gIntersection(gBuffer(spTransform(DFO.areas[[o]], CRS(crs.out)), byid=TRUE, width=0), spTransform(boundbox,CRS( crs.out ))), border="olivedrab4", lwd=0.5, add=T)
+    }
   }
   plot(these.gridlines.pr, col="grey77", lty=2, lwd=0.5, add=T)                           #gridlines
   text(coordinates(grid.pr), pos=grid.pr$pos, labels=parse(text=as.character(the.grid$labels)), offset=0.2, col="black", cex=1)

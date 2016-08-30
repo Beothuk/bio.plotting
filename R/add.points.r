@@ -21,10 +21,20 @@ add.points<-function(df, basemap.Info, lat.field="LATITUDE", long.field="LONGITU
                               plot.field='EST_COMBINED_WT.SUM', plot.field.pretty=NULL,
                               show.legend=T, pnt.style=19, 
                               nclasses=5, cexMax=3 ){
+  #get plotting parameters
+  p.plotting = bio.plotting::load.environment() 
+    lat.field = p.plotting$lat.field
+    long.field = p.plotting$long.field
+    plot.field = p.plotting$plot.field
+    plot.field.pretty = p.plotting$plot.field.pretty
+    show.legend = p.plotting$show.legend
+    pnt.style = p.plotting$pnt.style
+    nclasses = p.plotting$nclasses
+    cexMax = p.plotting$cexMax
   
   if (is.null(plot.field.pretty)) plot.field.pretty=plot.field
-    
-  library(classInt)
+  # require(bio.utilities)
+  # require(classInt)
   df$ORD = seq.int(nrow(df))
   classes = classIntervals(df[,plot.field], n=nclasses, style= "quantile", dataPrecision=0)
   colcode = findColours(classes, c("#c7e9b4","#41b6c4","#225ea8","#081d58")) #colorblind-friendly yellow-blue
