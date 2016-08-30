@@ -45,6 +45,8 @@ Mike McMahon, \email{Mike.McMahon@dfo-mpo.gc.ca}
 }
 \seealso{
 Other plotting: \code{\link{get.DFO.areas.musquash}},
-  \code{\link{get.DFO.areas}}, \code{\link{make.basemap}}
+  \code{\link{get.DFO.areas}},
+  \code{\link{load.environment}},
+  \code{\link{make.basemap}}
 }
 

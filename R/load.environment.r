@@ -1,3 +1,12 @@
+#' @title load.environment
+#' @description This function sets a bunch of parameters and outlines the package requirements for the bio.plotting package
+#' This way, a variety of functions can use them without having to pass them through function calls
+#' @return a list of parameters - \code{p.plotting}'
+#' @examples
+#'  p.plotting = bio.plotting::load.environment() 
+#' @family plotting
+#' @author  Mike McMahon, \email{Mike.McMahon@@dfo-mpo.gc.ca}
+#' @export
 load.environment = function( libs = NULL, p.plotting = NULL ) {
 
     if (is.null(p.plotting)) p.plotting = list()

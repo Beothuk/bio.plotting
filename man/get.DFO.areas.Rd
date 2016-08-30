@@ -4,7 +4,7 @@
 \alias{get.DFO.areas}
 \title{get.DFO.areas}
 \usage{
-get.DFO.areas(requested = c("All"), get.detailed = F)
+get.DFO.areas(DFO.areas = c("All"), DFO.detailed = F)
 }
 \arguments{
 \item{\code{requested}}{default is \code{"All"}. Valid values include the following:
@@ -46,6 +46,7 @@ Mike McMahon, \email{Mike.McMahon@dfo-mpo.gc.ca}
 \seealso{
 Other plotting: \code{\link{add.points}},
   \code{\link{get.DFO.areas.musquash}},
+  \code{\link{load.environment}},
   \code{\link{make.basemap}}
 }
 

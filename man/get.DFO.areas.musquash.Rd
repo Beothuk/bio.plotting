@@ -4,7 +4,7 @@
 \alias{get.DFO.areas.musquash}
 \title{get.DFO.areas.musquash}
 \usage{
-get.DFO.areas.musquash(get.detailed = F)
+get.DFO.areas.musquash(DFO.detailed = F)
 }
 \arguments{
 \item{\code{get.detailed}}{default is \code{F}.  Some areas are complex and contains sub-areas, and may not be appropriate for all plots.
@@ -29,6 +29,8 @@ Mike McMahon, \email{Mike.McMahon@dfo-mpo.gc.ca}
 }
 \seealso{
 Other plotting: \code{\link{add.points}},
-  \code{\link{get.DFO.areas}}, \code{\link{make.basemap}}
+  \code{\link{get.DFO.areas}},
+  \code{\link{load.environment}},
+  \code{\link{make.basemap}}
 }
 

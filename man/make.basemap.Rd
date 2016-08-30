@@ -4,9 +4,7 @@
 \alias{make.basemap}
 \title{make.basemap}
 \usage{
-make.basemap(df = NULL, auto.setlimits = F, x.limits = c(-70, -54),
-  y.limits = c(41, 50), add.DFO = c("St_Ann", "Gully", "Vazella_Emerald",
-  "Vazella_Sambro", "Lophelia", "NE_Channel"), crs.out = "+init=epsg:2220")
+make.basemap(df = NULL)
 }
 \arguments{
 \item{\code{df}}{default is \code{NULL}.  You can optionally send a dataframe to this function, which can be used in conjunction with}
@@ -35,10 +33,16 @@ Bathymetry will be added to this in the near future, and the function call will 
 .
 using the clipped data (pre-projection), capture information for the grid,
 including information about the gridlines, as well as their labels
+
+the hack below helps in cases where the data results in a map less than 1deg by 1 deg - in which case, the gridlines and labels need to 
+be more frequent
+by1 and by2 relate to the gridline labels
+by1_1 and by2_1 relate to the gridlines themselves
 }
 \seealso{
 Other plotting: \code{\link{add.points}},
   \code{\link{get.DFO.areas.musquash}},
-  \code{\link{get.DFO.areas}}
+  \code{\link{get.DFO.areas}},
+  \code{\link{load.environment}}
 }
 
