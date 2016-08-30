@@ -1,7 +1,7 @@
 #' @title load.environment
 #' @description This function sets a bunch of parameters and outlines the package requirements for the bio.plotting package
 #' This way, a variety of functions can use them without having to pass them through function calls
-#' @return a list of parameters - \code{p.plotting}'
+#' @return a list of parameters - \code{p.plotting}
 #' @examples
 #'  p.plotting = bio.plotting::load.environment() 
 #' @family plotting
@@ -21,8 +21,6 @@ load.environment = function( libs = NULL, p.plotting = NULL ) {
   if ( exists("libs", p.plotting) ) libs = c(libs, p.plotting$libs)
   
   p.plotting$libs = unique( c( libs, rlibs, blibs ) )
-  
-  p.plotting$libs = c(rlibs)
   
   #bio.plotting
     #make.basemap()
