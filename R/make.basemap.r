@@ -94,7 +94,7 @@ make.basemap = function(df=NULL, p.plotting=p.plotting){
   
   #get the desired DFO areas
   if (length(DFO.areas>0)) {
-    DFO.areas=get.DFO.areas(DFO.areas, DFO.detailed)
+    DFO.areas=get.DFO.areas(p.plotting=p.plotting)
     for (o in 1:length(DFO.areas)){
       plot(gIntersection(gBuffer(spTransform(DFO.areas[[o]], CRS(crs.out)), byid=TRUE, width=0), spTransform(boundbox,CRS( crs.out ))), border="olivedrab4", lwd=0.5, add=T)
     }
