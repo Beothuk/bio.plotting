@@ -26,9 +26,9 @@
 #' @author  Mike McMahon, \email{Mike.McMahon@@dfo-mpo.gc.ca}
 #' @note Musquash is a very complex area, and has a separate function has not been enabled yet.
 #' @export
-get.DFO.areas <- function(DFO.areas=c("All"), DFO.detailed=F)
+get.DFO.areas <- function(p.plotting = p.plotting)
 {
-  p.plotting = bio.plotting::load.environment()
+  #p.plotting = bio.plotting::load.environment()
   
   DFO.areas = p.plotting$DFO.areas
   DFO.detailed = p.plotting$DFO.detailed

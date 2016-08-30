@@ -17,12 +17,9 @@
 #' @family plotting
 #' @author  Mike McMahon, \email{Mike.McMahon@@dfo-mpo.gc.ca}
 #' @export
-add.points<-function(df, basemap.Info, lat.field="LATITUDE", long.field="LONGITUDE", 
-                              plot.field='EST_COMBINED_WT.SUM', plot.field.pretty=NULL,
-                              show.legend=T, pnt.style=19, 
-                              nclasses=5, cexMax=3 ){
+add.points<-function(df, basemap.Info, p.plotting=p.plotting ){
   #get plotting parameters
-  p.plotting = bio.plotting::load.environment() 
+  #p.plotting <<- bio.plotting::load.environment() 
     lat.field = p.plotting$lat.field
     long.field = p.plotting$long.field
     plot.field = p.plotting$plot.field

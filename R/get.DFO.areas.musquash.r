@@ -10,7 +10,7 @@
 #' @author  Mike McMahon, \email{Mike.McMahon@@dfo-mpo.gc.ca}
 #' @export
 #' @note 
-get.DFO.areas.musquash  = function(DFO.detailed = F){
+get.DFO.areas.musquash  = function(p.plotting = p.plotting){
   #' Coordinates for this polygon were given to 14 decimal places, suggesting accuracy to half the thickness of an atom,
   #' I've rounded them all down to 7 decimal places, generously assuming positions were known to 11mm
   detailed=DFO.detailed

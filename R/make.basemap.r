@@ -12,10 +12,10 @@
 #' @family plotting
 #' @export
 #' @note .
-make.basemap = function(df=NULL){
+make.basemap = function(df=NULL, p.plotting=p.plotting){
 
-  p.plotting = bio.plotting::load.environment()
-  
+  # p.plotting = bio.plotting::load.environment()
+  # 
     auto.setlimits = p.plotting$auto.setlimits
     x.limits = p.plotting$x.limits
     y.limits = p.plotting$y.limits
