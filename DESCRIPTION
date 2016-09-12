@@ -1,13 +1,14 @@
 Package: bio.plotting
-Title: Package that interacts with bio to facilitate the presentation of spatial data
+Title: Simple tools for creating maps and quickly plotting data.
 Version: 0.1
-Authors@R: c( person("Mike", "McMahon", email="Mike.McMahon@dfo-mpo.gc.ca", role=c("aut", "cre")) )
-Description: This project interacts with the functionality of bio to facilitate the presentation of spatial data
+Authors@R: c( person("Mike", "McMahon", email="mike.mcmahon@dfo-mpo.gc.ca", role=c("aut", "cre")) )
+Description: This project preserves some of the original functionality of bio
+    tools to source structured directories, etc. It also stores the links to the
+    former subprojects that interoperate.
 Depends:
     R (>= 3.0.0)
 Imports:
-    devtools,
-    bio.base
+    devtools
 Suggests:
     knitr,
     rmarkdown
