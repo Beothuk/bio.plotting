@@ -89,7 +89,8 @@ valid.areas=list(
 
   get_area = function(path=NULL){
     this = readOGR(dsn=dirname(path), layer=sub("[.][^.]*$", "", basename(path)), verbose=F)
-    if (known.areas.detailed == F & length(this)>1){
+    print(class(this))
+    if (known.areas.detailed == F & length(this)>1 & class(this)[1]=="SpatialPolygonsDataFrame"){
       lps=getSpPPolygonsLabptSlots(this)
       IDOneBin <- cut(lps[,1], range(lps[,1]), include.lowest=TRUE)
       this   <- unionSpatialPolygons(this,IDOneBin)

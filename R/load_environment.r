@@ -36,8 +36,9 @@ load_environment = function( libs = NULL, p.plotting = NULL ) {
   p.plotting$plot.field.pretty = p.plotting$plot.field #used by the legend
   p.plotting$show.legend = T
   p.plotting$pnt.style = 21
-  p.plotting$cexMax = 1
-  p.plotting$pnt.col = 'black'
+  p.plotting$pt.cex.min = 1
+  p.plotting$pt.cex.max = 2
+  p.plotting$pnt.col = 'black'  #this serves as the point outline
   p.plotting$pnt.bg = 'red'
   p.plotting$use.buckets = F
   p.plotting$nclasses = 3
@@ -45,7 +46,7 @@ load_environment = function( libs = NULL, p.plotting = NULL ) {
   #get.known.areas()
   p.plotting$known.areas = NULL 
   p.plotting$known.areas.add = T
-  p.plotting$known.areas.detailed = F
+  p.plotting$known.areas.detailed = T
   
   return(p.plotting)
 }
