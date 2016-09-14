@@ -4,11 +4,10 @@
 \alias{get_known_areas}
 \title{get_known_areas}
 \usage{
-get_known_areas(p.plotting = p.plotting, known.areas = NULL,
-  known.areas.detailed = NULL)
+get_known_areas(known.areas = NULL, known.areas.detailed = NULL)
 }
 \arguments{
-\item{\code{known.areas}}{default is \code{NULL}. Valid values include the following:
+\item{known.areas}{default is \code{NULL}. Valid values include the following:
 \itemize{
   \item Bowtie
   \item LFA40
@@ -36,7 +35,7 @@ Valid groups include:
   \item Strata (US and Maritimes strata)
 }}
 
-\item{\code{known.areas.detailed}}{default is \code{F}.  Some areas are complex and contains sub-areas, and may not be appropriate for all plots.
+\item{known.areas.detailed}{default is \code{F}.  Some areas are complex and contains sub-areas, and may not be appropriate for all plots.
 \code{known.areas.detailed  =T} will plot all of complexity, while \code{known.areas.detailed  = F} will only plot the outlines.}
 }
 \value{
@@ -54,14 +53,14 @@ As it is now written, this function references paths that will not be visible to
 data layers will be moved to a location accessible by all staff.
 }
 \examples{
- plot(get.known.areas('Gully')[[1]])
+ this.is.the.gully = get_known_areas('Gully')[[1]]
 }
 \author{
 Mike McMahon, \email{Mike.McMahon@dfo-mpo.gc.ca}
 }
 \seealso{
 Other plotting: \code{\link{add_points}},
-  \code{\link{load_environment}},
+  \code{\link{load_plotting_environment}},
   \code{\link{make_basemap}}
 }
 

@@ -1,19 +1,29 @@
 Package: bio.plotting
-Title: Simple tools for creating maps and quickly plotting data.
+Title: Simple tools for creating maps and quickly plotting data
 Version: 0.1
 Authors@R: c( person("Mike", "McMahon", email="mike.mcmahon@dfo-mpo.gc.ca", role=c("aut", "cre")) )
-Description: This project preserves some of the original functionality of bio
-    tools to source structured directories, etc. It also stores the links to the
-    former subprojects that interoperate.
+Description: This package facilitates the creation of basemaps in any projection.  Areas of importance (e.g. strata, fishing areas) can 
+  easily be added.  Dataframes can also be overlain easily, displayed either generically, or as a number of discrete classes depending on the 
+  value of a particular field.
 Depends:
-    R (>= 3.0.0)
+    R (>= 3.0.0),
+    mapdata
 Imports:
-    devtools
+    devtools, 
+    rgdal,
+    sp,
+    grDevices,
+    classInt,
+    graphics,
+    maptools,
+    maps,
+    rgeos,
+    bio.base
 Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
-License: MIT
+License: MIT + file LICENSE
 LazyData: true
 URL: https://github.com/Beothuk/bio.plotting/
 RoxygenNote: 5.0.1

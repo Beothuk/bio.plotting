@@ -4,35 +4,33 @@
 \alias{make_basemap}
 \title{make_basemap}
 \usage{
-make_basemap(p.plotting = p.plotting, df = NULL, auto.setlimits = NULL,
-  crs.out = NULL, x.limits = NULL, y.limits = NULL, known.areas = NULL,
+make_basemap(df = NULL, auto.setlimits = NULL, crs.out = NULL,
+  x.limits = NULL, y.limits = NULL, known.areas = NULL,
   known.areas.add = NULL, known.areas.detailed = NULL)
 }
 \arguments{
-\item{\code{p.plotting}}{a list derived from \code{bio.plotting::load_environment()} holding some default variables}
-
-\item{\code{df}}{default is \code{NULL}.  You can optionally send a dataframe to this function, which can be have the plot extent match 
+\item{df}{default is \code{NULL}.  You can optionally send a dataframe to this function, which can be have the plot extent match 
 the data.}
 
-\item{\code{auto.setlimits}}{default is \code{NULL}. This controls the extent of the resultant map.  If \code{auto.setlimits = T} (and a
+\item{auto.setlimits}{default is \code{NULL}. This controls the extent of the resultant map.  If \code{auto.setlimits = T} (and a
 data frame with values for \code{LATITUDE} and \code{LONGITUDE} has been sent), it will use the data to determine the plot boundaries 
 (plus a 15 percent padding factor).  If unspecified, the value from p.plotting will be used.}
 
-\item{\code{crs.out}}{default is \code{'+init=epsg:2220'} (UTM Zone 20 N).  This is the desired projection of the final plot.}
+\item{crs.out}{default is \code{'+init=epsg:2220'} (UTM Zone 20 N).  This is the desired projection of the final plot.}
 
-\item{\code{x.limits}}{default is \code{NULL} but an appropriate value would be in the form of \code{c(-70,-54)}. These are the default 
+\item{x.limits}{default is \code{NULL} but an appropriate value would be in the form of \code{c(-70,-54)}. These are the default 
 bounding longitudes. If unspecified, the value from p.plotting will be used.}
 
-\item{\code{y.limits}}{default is \code{NULL} but an appropriate value would be in the form of  is \code{c(41,50)}. These are the default 
+\item{y.limits}{default is \code{NULL} but an appropriate value would be in the form of  is \code{c(41,50)}. These are the default 
 bounding latitudes for extent. If unspecified, the value from p.plotting will be used.}
 
-\item{\code{known.areas}}{default is \code{NULL}, but can include any areas identified in the \code{get_known_areas()} function. If 
+\item{known.areas}{default is \code{NULL}, but can include any areas identified in the \code{get_known_areas()} function. If 
 unspecified, the value from p.plotting will be used.}
 
-\item{\code{known.areas.add}}{default is \code{NULL}.  This flag indicates whether or not the specified \code{known.areas} should be 
+\item{known.areas.add}{default is \code{NULL}.  This flag indicates whether or not the specified \code{known.areas} should be 
 plotted.  If unspecified, the value from p.plotting will be used.}
 
-\item{\code{known.areas.detailed}}{default is \code{NULL}.  This flag indicates whether the detailed versions of known areas should be 
+\item{known.areas.detailed}{default is \code{NULL}.  This flag indicates whether the detailed versions of known areas should be 
 plotted, or just the outer boundaries.  If unspecified, the value from p.plotting will be used.}
 }
 \value{
@@ -45,7 +43,7 @@ lat-lon grid.  Defaults for the plot are stored in \code{p.plotting} which can b
 will automatically match the extent of the supplied data (with a 15 percent buffer around the edges).
 Additionally, the output projection of the plot can be specified (e.g. \code{"+init=epsg:2220"} would result in UTM Zone 20 N, while 
 \code{"+init=epsg:4326"} would be an unprojected WGS84 plot. Many values are possible and/or appropriate for the value of \code{crs.out}, 
-depending on the data. Check \code{\link{http://spatialreference.org/ref/epsg/}} for more options.
+depending on the data. Check \code{\link[sp]{CRS-class}} for more options.
 }
 \note{
 Bathymetry will be added to this in the near future, and the function call will be modified to include a flag that will indicate 
@@ -54,6 +52,6 @@ whether or not it should be plotted.
 \seealso{
 Other plotting: \code{\link{add_points}},
   \code{\link{get_known_areas}},
-  \code{\link{load_environment}}
+  \code{\link{load_plotting_environment}}
 }
 
