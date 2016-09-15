@@ -90,10 +90,8 @@ get_known_areas <- function(known.areas=NULL, known.areas.detailed= NULL)
     list(area='nafo', groups=NULL,
          path='/home/mike/Shares/R_PED/Shared/Spatial/Management_Areas/Fisheries/NAFO/Lines_NAFO.shp')
   )
-  
   get_area = function(path=NULL){
     this = readOGR(dsn=dirname(path), layer=sub("[.][^.]*$", "", basename(path)), verbose=F)
-    print(class(this))
     if (known.areas.detailed == F & length(this)>1 & class(this)[1]=="SpatialPolygonsDataFrame"){
       lps=getSpPPolygonsLabptSlots(this)
       IDOneBin <- cut(lps[,1], range(lps[,1]), include.lowest=TRUE)
@@ -110,5 +108,6 @@ get_known_areas <- function(known.areas=NULL, known.areas.detailed= NULL)
       }
     }
   } 
+  
   return(these.areas)
 }

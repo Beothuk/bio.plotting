@@ -91,7 +91,7 @@ add_points<-function(df, basemap.Info =  NULL, lat.field=NULL, lon.field = NULL,
     leg.pt.cex = leg.data$ptSizer
   }
   
-  plot(df.sp.tr, col = pnt.col, bg= pnt.bg, pch = pnt.style, cex = pnt.cex, add=T)
+  sp::plot(df.sp.tr, col = pnt.col, bg= pnt.bg, pch = pnt.style, cex = pnt.cex, add=T)
   if (show.legend){
     leg.pos=c(min(basemap.Info@bbox[1,]),max(basemap.Info@bbox[2,]))
     legend(
