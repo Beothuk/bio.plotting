@@ -108,7 +108,6 @@ make_basemap = function(df=NULL, auto.setlimits=NULL, crs.out=NULL, x.limits=NUL
     ID = "bb2")), 
     proj4string = CRS(crs.in))
   boundbox2.pr = spTransform(boundbox2,crs.out)
-  
   the.grid = gridat(boundbox, easts=seq(boundbox@"bbox"[1],boundbox@"bbox"[3],by=x.maj), norths=seq(boundbox@"bbox"[2],boundbox@"bbox"[4],by=y.maj))
   grid.pr = spTransform(the.grid, CRS(crs.out))
   these.gridlines = gridlines(boundbox, easts=seq(boundbox@"bbox"[1],boundbox@"bbox"[3],by=x.min), norths=seq(boundbox@"bbox"[2],boundbox@"bbox"[4],by=y.min))
@@ -121,9 +120,9 @@ make_basemap = function(df=NULL, auto.setlimits=NULL, crs.out=NULL, x.limits=NUL
   coastline.sp.clip = gIntersection(gBuffer(coastline.sp, byid=TRUE, width=0), spTransform(boundbox,CRS( crs.out )))
   
   par(mar=c(1,1,1,1),xaxs = "i",yaxs = "i",cex.axis=1.3,cex.lab=1.4)
-  
-  plot(boundbox2.pr, border="transparent", add=F, lwd=1) #add transparent boundbox first to ensure all data shown
-  if (!is.null(coastline.sp.clip)) plot(coastline.sp.clip, col="navajowhite2", border="navajowhite4", lwd=0.5, axes=F, add=T )  #add coastline
+  #lines(boundbox2.pr@polygons[[1]]@Polygons[[1]]@coords, col="transparent")
+  sp::plot(boundbox2.pr, border="transparent", add=F, lwd=1) #add transparent boundbox first to ensure all data shown
+  if (!is.null(coastline.sp.clip)) sp::plot(coastline.sp.clip, col="navajowhite2", border="navajowhite4", lwd=0.5, axes=F, add=T )  #add coastline
   
   #add desired areas
   if (length(known.areas)>0) {
@@ -131,11 +130,12 @@ make_basemap = function(df=NULL, auto.setlimits=NULL, crs.out=NULL, x.limits=NUL
     for (o in 1:length(known.areas)){
       areax= spTransform(known.areas[[o]], CRS(crs.out))
       areax=gIntersection(areax, boundbox.pr, byid=T)
-      plot(areax, border = "gray50", lwd=0.75, add=T)
+      sp::plot(areax, border = "gray50", lwd=0.75, add=T)
     }
   }
-  plot(these.gridlines.pr, col="grey77", lty=2, lwd=0.5, add=T)
+  sp::plot(these.gridlines.pr, col="grey77", lty=2, lwd=0.5, add=T)
   text(coordinates(grid.pr), pos=grid.pr$pos, labels=parse(text=as.character(the.grid$labels)), offset=0.2, col="black", cex=1)
-  plot(boundbox.pr, border="black", add=T, lwd=1) #add actual boundbox
+  sp::plot(boundbox.pr, border="black", add=T, lwd=1) #add actual boundbox
+  #lines(boundbox2.pr@polygons[[1]]@Polygons[[1]]@coords, col="black", lwd=1)
   return(boundbox.pr)
 }

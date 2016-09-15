@@ -8,6 +8,9 @@
 # Example code in package build process
 *-Ex.R
 
+# tests
+tests/
+
 # RStudio files
 .Rproj.user/
 
