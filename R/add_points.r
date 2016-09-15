@@ -56,10 +56,11 @@ add_points<-function(df, basemap.Info =  NULL, lat.field=NULL, lon.field = NULL,
   df.sp <- SpatialPointsDataFrame(coords = df.xy, data = df, proj4string = CRS("+init=epsg:4326"))
   df.sp.tr=spTransform(df.sp,CRS(basemap.Info@proj4string@projargs))
   df.sp.tr$over=over(df.sp.tr,basemap.Info)
-  n.validpts = NROW(df.sp.tr)
-  print(paste0(NROW(df.sp.tr[is.na(df.sp.tr$over),])," of ", n.validpts, " positions lie outside of the map"))
+  n.validpts = NROW(df.sp.tr[is.na(df.sp.tr$over),])
+  print(paste0(n.validpts," of ", NROW(df.sp.tr), " positions lie outside of the map"))
   df.sp.tr = df.sp.tr[!is.na(df.sp.tr$over),]
   df.sp.tr$over=NULL
+
   if (n.validpts<nclasses & use.buckets==TRUE) {
     use.buckets=FALSE
     print("Too little data to bucket - using generic symbolization")
