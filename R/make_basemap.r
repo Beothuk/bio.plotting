@@ -125,8 +125,8 @@ make_basemap = function(df=NULL, auto.setlimits=NULL, crs.out=NULL, x.limits=NUL
   if (!is.null(coastline.sp.clip)) sp::plot(coastline.sp.clip, col="navajowhite2", border="navajowhite4", lwd=0.5, axes=F, add=T )  #add coastline
   
   #add desired areas
-  if (length(known.areas)>0) {
-    known.areas=get_known_areas(p.plotting, known.areas)
+  if (known.areas.add ==T & length(known.areas)>0) {
+    known.areas=get_known_areas(known.areas, known.areas.detailed)
     for (o in 1:length(known.areas)){
       areax= spTransform(known.areas[[o]], CRS(crs.out))
       areax=gIntersection(areax, boundbox.pr, byid=T)

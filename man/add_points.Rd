@@ -18,7 +18,7 @@ add_points(df, basemap.Info = NULL, lat.field = NULL, lon.field = NULL,
 
 \item{lon.field}{the default is \code{NULL}.  The name of the field holding longitude values (in decimal degrees).  If unspecified, the value from p.plotting will be used.}
 
-\item{plot.field}{the default is \code{NULL}.  The field on which to symbolize the data.  If unspecified, the value from p.plotting will be used.}
+\item{plot.field}{the default is \code{NULL}.  The field on which to symbolize the data.  If unspecified, the data can only be symbolized generically.}
 
 \item{pnt.style}{the default is \code{NULL}. Determines the style of the points (any valid value for \code{pch} is acceptable).  If unspecified, the value from p.plotting will be used.}
 

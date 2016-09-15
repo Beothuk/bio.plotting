@@ -35,8 +35,8 @@ load_plotting_environment = function( ) {
   #add.points()
   p.plotting$lat.field = 'LATITUDE'
   p.plotting$lon.field = 'LONGITUDE'
-  p.plotting$plot.field = 'EST_COMBINED_WT.SUM'
-  p.plotting$plot.field.pretty = p.plotting$plot.field #used by the legend
+  p.plotting$plot.field = NULL
+  p.plotting$plot.field.pretty = NULL
   p.plotting$show.legend = F
   p.plotting$pnt.style = 21
   p.plotting$pt.cex.min = 1
