@@ -56,14 +56,18 @@ add_points<-function(df, basemap.Info =  NULL, lat.field=NULL, lon.field = NULL,
   df.sp <- SpatialPointsDataFrame(coords = df.xy, data = df, proj4string = CRS("+init=epsg:4326"))
   df.sp.tr=spTransform(df.sp,CRS(basemap.Info@proj4string@projargs))
   df.sp.tr$over=over(df.sp.tr,basemap.Info)
-  n.validpts = NROW(df.sp.tr[is.na(df.sp.tr$over),])
-  print(paste0(n.validpts," of ", NROW(df.sp.tr), " positions lie outside of the map"))
+  n.invalidpts = NROW(df.sp.tr[is.na(df.sp.tr$over),])
+  #print(n.validpts)
+  n.validpts = NROW(df.sp.tr[!is.na(df.sp.tr$over),])
+  #print(n.invalidpts)
+  if (n.invalidpts > 0) print(paste0(n.validpts," of ", NROW(df.sp.tr), " positions lie outside of the map"))
   df.sp.tr = df.sp.tr[!is.na(df.sp.tr$over),]
   df.sp.tr$over=NULL
-
-  if (n.validpts<nclasses & use.buckets==TRUE) {
+  if (n.validpts > 3 & n.validpts > nclasses & use.buckets==TRUE) {
+    use.buckets=TRUE
+  }else{
+    if (use.buckets==TRUE) print("Too little data to bucket - using generic symbolization")
     use.buckets=FALSE
-    print("Too little data to bucket - using generic symbolization")
   }
   if (use.buckets){
     df.sp.tr$ORD = seq.int(nrow(df.sp.tr))
