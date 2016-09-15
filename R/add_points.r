@@ -60,9 +60,9 @@ add_points<-function(df, basemap.Info =  NULL, lat.field=NULL, lon.field = NULL,
   print(paste0(NROW(df.sp.tr[is.na(df.sp.tr$over),])," of ", n.validpts, " positions lie outside of the map"))
   df.sp.tr = df.sp.tr[!is.na(df.sp.tr$over),]
   df.sp.tr$over=NULL
-  if (n.validpts<2 & use.buckets==TRUE) {
+  if (n.validpts<nclasses & use.buckets==TRUE) {
     use.buckets=FALSE
-    print("Too little data to bucket")
+    print("Too little data to bucket - using generic symbolization")
   }
   if (use.buckets){
     df.sp.tr$ORD = seq.int(nrow(df.sp.tr))
