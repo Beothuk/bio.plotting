@@ -21,6 +21,6 @@ Mike McMahon, \email{Mike.McMahon@dfo-mpo.gc.ca}
 }
 \seealso{
 Other plotting: \code{\link{add_points}},
-  \code{\link{get_known_areas}}, \code{\link{make_basemap}}
+  \code{\link{make_basemap}}
 }
 

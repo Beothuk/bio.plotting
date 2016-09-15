@@ -16,12 +16,6 @@
 #' bounding longitudes. If unspecified, the value from p.plotting will be used.
 #' @param y.limits default is \code{NULL} but an appropriate value would be in the form of  is \code{c(41,50)}. These are the default 
 #' bounding latitudes for extent. If unspecified, the value from p.plotting will be used.
-#' @param known.areas default is \code{NULL}, but can include any areas identified in the \code{get_known_areas()} function. If 
-#' unspecified, the value from p.plotting will be used.
-#' @param known.areas.add default is \code{NULL}.  This flag indicates whether or not the specified \code{known.areas} should be 
-#' plotted.  If unspecified, the value from p.plotting will be used.
-#' @param known.areas.detailed default is \code{NULL}.  This flag indicates whether the detailed versions of known areas should be 
-#' plotted, or just the outer boundaries.  If unspecified, the value from p.plotting will be used.
 #' @return a SpatialPolygons object corresponding to the bounding box of the plot.  
 #' @note Bathymetry will be added to this in the near future, and the function call will be modified to include a flag that will indicate 
 #' whether or not it should be plotted.  
@@ -48,16 +42,18 @@
 #' @import mapdata
 #' @family plotting
 #' @export
-make_basemap = function(df=NULL, auto.setlimits=NULL, crs.out=NULL, x.limits=NULL, y.limits=NULL, 
-                        known.areas=NULL,known.areas.add=NULL,known.areas.detailed=NULL){
+make_basemap = function(df=NULL, auto.setlimits=NULL, crs.out=NULL, x.limits=NULL, y.limits=NULL
+                        # ,known.areas=NULL,known.areas.add=NULL,known.areas.detailed=NULL
+                        ){
   if (!exists("p.plotting")) p.plotting=load_plotting_environment()
   if (is.null(auto.setlimits)) auto.setlimits = p.plotting$auto.setlimits
   if (is.null(crs.out)) crs.out = p.plotting$crs.out
   if (is.null(x.limits)) x.limits = p.plotting$x.limits
   if (is.null(y.limits)) y.limits = p.plotting$y.limits
-  if (is.null(known.areas)) known.areas = p.plotting$known.areas
-  if (is.null(known.areas.add)) known.areas.add = p.plotting$known.areas.add
-  if (is.null(known.areas.detailed)) known.areas.detailed = p.plotting$known.areas.detailed
+  # if (is.null(gis.archive.root.path)) gis.archive.root.path = p.plotting$gis.archive.root.path
+  # if (is.null(known.areas)) known.areas = p.plotting$known.areas
+  # if (is.null(known.areas.add)) known.areas.add = p.plotting$known.areas.add
+  # if (is.null(known.areas.detailed)) known.areas.detailed = p.plotting$known.areas.detailed
   
   crs.in="+init=epsg:4326"
   
@@ -122,20 +118,20 @@ make_basemap = function(df=NULL, auto.setlimits=NULL, crs.out=NULL, x.limits=NUL
   par(mar=c(1,1,1,1),xaxs = "i",yaxs = "i",cex.axis=1.3,cex.lab=1.4)
   #lines(boundbox2.pr@polygons[[1]]@Polygons[[1]]@coords, col="transparent")
   sp::plot(boundbox2.pr, border="transparent", add=F, lwd=1) #add transparent boundbox first to ensure all data shown
-  if (!is.null(coastline.sp.clip)) sp::plot(coastline.sp.clip, col="navajowhite2", border="navajowhite4", lwd=0.5, axes=F, add=T )  #add coastline
   
   #add desired areas
-  if (known.areas.add ==T & length(known.areas)>0) {
-    known.areas=get_known_areas(known.areas, known.areas.detailed)
-    for (o in 1:length(known.areas)){
-      areax= spTransform(known.areas[[o]], CRS(crs.out))
-      areax=gIntersection(areax, boundbox.pr, byid=T)
-      sp::plot(areax, border = "gray50", lwd=0.75, add=T)
-    }
-  }
+  # if (known.areas.add ==T & length(known.areas)>0) {
+  #   known.areas=get_known_areas(gis.archive.root.path, known.areas, known.areas.detailed)
+  #   for (o in 1:length(known.areas)){
+  #     areax= spTransform(known.areas[[o]], CRS(crs.out))
+  #     areax=gIntersection(areax, boundbox.pr, byid=T)
+  #     sp::plot(areax, border = "gray50", lwd=0.75, add=T)
+  #   }
+  # }
+  if (!is.null(coastline.sp.clip)) sp::plot(coastline.sp.clip, col="navajowhite2", border="navajowhite4", lwd=0.5, axes=F, add=T )  #add coastline
+  
   sp::plot(these.gridlines.pr, col="grey77", lty=2, lwd=0.5, add=T)
   text(coordinates(grid.pr), pos=grid.pr$pos, labels=parse(text=as.character(the.grid$labels)), offset=0.2, col="black", cex=1)
   sp::plot(boundbox.pr, border="black", add=T, lwd=1) #add actual boundbox
-  #lines(boundbox2.pr@polygons[[1]]@Polygons[[1]]@coords, col="black", lwd=1)
   return(boundbox.pr)
 }

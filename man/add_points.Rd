@@ -53,8 +53,7 @@ field, and the colour and size of the points varies with the values in \code{plo
 Mike McMahon, \email{Mike.McMahon@dfo-mpo.gc.ca}
 }
 \seealso{
-Other plotting: \code{\link{get_known_areas}},
-  \code{\link{load_plotting_environment}},
+Other plotting: \code{\link{load_plotting_environment}},
   \code{\link{make_basemap}}
 }
 

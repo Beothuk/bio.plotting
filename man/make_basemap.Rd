@@ -5,8 +5,7 @@
 \title{make_basemap}
 \usage{
 make_basemap(df = NULL, auto.setlimits = NULL, crs.out = NULL,
-  x.limits = NULL, y.limits = NULL, known.areas = NULL,
-  known.areas.add = NULL, known.areas.detailed = NULL)
+  x.limits = NULL, y.limits = NULL)
 }
 \arguments{
 \item{df}{default is \code{NULL}.  You can optionally send a dataframe to this function, which can be have the plot extent match 
@@ -23,15 +22,6 @@ bounding longitudes. If unspecified, the value from p.plotting will be used.}
 
 \item{y.limits}{default is \code{NULL} but an appropriate value would be in the form of  is \code{c(41,50)}. These are the default 
 bounding latitudes for extent. If unspecified, the value from p.plotting will be used.}
-
-\item{known.areas}{default is \code{NULL}, but can include any areas identified in the \code{get_known_areas()} function. If 
-unspecified, the value from p.plotting will be used.}
-
-\item{known.areas.add}{default is \code{NULL}.  This flag indicates whether or not the specified \code{known.areas} should be 
-plotted.  If unspecified, the value from p.plotting will be used.}
-
-\item{known.areas.detailed}{default is \code{NULL}.  This flag indicates whether the detailed versions of known areas should be 
-plotted, or just the outer boundaries.  If unspecified, the value from p.plotting will be used.}
 }
 \value{
 a SpatialPolygons object corresponding to the bounding box of the plot.
@@ -51,7 +41,6 @@ whether or not it should be plotted.
 }
 \seealso{
 Other plotting: \code{\link{add_points}},
-  \code{\link{get_known_areas}},
   \code{\link{load_plotting_environment}}
 }
 
