@@ -113,7 +113,7 @@ valid field to plot in p.plotting$plot.field.  In the meantime, plotting generic
     leg.pt.cex = leg.data$ptSizer
   }
   
-  sp::plot(df.sp.tr, col = pnt.col, bg= pnt.bg, pch = pnt.style, cex = pnt.cex, add=T)
+  plot(df.sp.tr, col = pnt.col, bg= pnt.bg, pch = pnt.style, cex = pnt.cex, add=T)
   if (show.legend){
     leg.pos=c(min(basemap.Info@bbox[1,]),max(basemap.Info@bbox[2,]))
     legend(
