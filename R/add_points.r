@@ -22,7 +22,7 @@
 #' @return NULL, but notifies the user of how many positions lay outside of the map boundaries.
 #' @importFrom sp over
 #' @importFrom sp spTransform
-#' @importFrom sp SpatialPointsDataFrame
+#' @importFrom sp SpatialPoints
 #' @importFrom classInt classIntervals
 #' @importFrom classInt findColours
 #' @importFrom classInt findCols
@@ -58,6 +58,9 @@ add_points<-function(df, basemap.Info =  NULL, lat.field=NULL, lon.field = NULL,
   if (is.null(plot.field)) plot.field = p.plotting$plot.field
   #still no plot field?  use an existing field, but don't symbolize by it
   if (is.null(plot.field)) {
+    if (use.buckets==TRUE) cat(
+"You set use.buckets=TRUE, but didn't indicate a field to symbolize.  To avoid this, please set a 
+valid field to plot in p.plotting$plot.field.  In the meantime, plotting generically...\n")
     plot.field = lat.field
     plot.field.pretty = "Generic"
     use.buckets = FALSE

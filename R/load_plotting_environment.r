@@ -4,8 +4,6 @@
 #' @return a list of parameters - \code{p.plotting}
 #' @examples
 #'  p.plotting = load_plotting_environment()
-#' @importFrom bio.base RLibrary 
-#' @importFrom bio.base project.datadirectory
 #' @family plotting
 #' @author  Mike McMahon, \email{Mike.McMahon@@dfo-mpo.gc.ca}
 #' @export
