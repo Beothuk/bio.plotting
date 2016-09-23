@@ -40,8 +40,6 @@ add_points<-function(df, basemap.Info =  NULL, lat.field=NULL, lon.field = NULL,
   if (is.null(lat.field)) lat.field = p.plotting$lat.field
   if (is.null(lon.field)) lon.field = p.plotting$lon.field
   
-
-  
   if (is.null(pnt.style)) pnt.style = p.plotting$pnt.style
   if (is.null(pnt.col)) pnt.col = p.plotting$pnt.col
   if (is.null(pnt.bg)) pnt.bg = p.plotting$pnt.bg
@@ -54,7 +52,6 @@ add_points<-function(df, basemap.Info =  NULL, lat.field=NULL, lon.field = NULL,
   
   if (is.null(basemap.Info)) basemap.Info = make_basemap(p.plotting)
   
-  
   if (is.null(plot.field)) plot.field = p.plotting$plot.field
   #still no plot field?  use an existing field, but don't symbolize by it
   if (is.null(plot.field)) {
@@ -66,7 +63,7 @@ valid field to plot in p.plotting$plot.field.  In the meantime, plotting generic
     use.buckets = FALSE
   }
   
-  if (is.null(plot.field.pretty)) plot.field.pretty = p.plotting$plot.field
+  if (is.null(plot.field.pretty)) plot.field.pretty = plot.field
   df.xy = df[,c(lon.field,lat.field)]
   df.sp <- SpatialPointsDataFrame(coords = df.xy, data = df, proj4string = CRS("+init=epsg:4326"))
   df.sp.tr=spTransform(df.sp,CRS(basemap.Info@proj4string@projargs))
