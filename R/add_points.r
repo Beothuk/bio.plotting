@@ -22,7 +22,7 @@
 #' @return NULL, but notifies the user of how many positions lay outside of the map boundaries.
 #' @importFrom sp over
 #' @importFrom sp spTransform
-#' @importFrom sp SpatialPoints
+#' @importFrom sp SpatialPointsDataFrame
 #' @importFrom classInt classIntervals
 #' @importFrom classInt findColours
 #' @importFrom classInt findCols
@@ -67,7 +67,6 @@ valid field to plot in p.plotting$plot.field.  In the meantime, plotting generic
   }
   
   if (is.null(plot.field.pretty)) plot.field.pretty = p.plotting$plot.field
-  
   df.xy = df[,c(lon.field,lat.field)]
   df.sp <- SpatialPointsDataFrame(coords = df.xy, data = df, proj4string = CRS("+init=epsg:4326"))
   df.sp.tr=spTransform(df.sp,CRS(basemap.Info@proj4string@projargs))
