@@ -48,7 +48,7 @@ add_points <-
            use.buckets = TRUE,
            use.colours = TRUE,
            nclasses = 3) {
-    if (!exists("p.plotting")){
+    if (exists("p.plotting")){
       lat.field = p.plotting$lat.field
       lon.field = p.plotting$lon.field
       pnt.style = p.plotting$pnt.style
@@ -60,9 +60,11 @@ add_points <-
       nclasses = p.plotting$nclasses
       show.legend = p.plotting$show.legend
       plot.field = p.plotting$plot.field
+      if (is.null(basemap.Info))
+        basemap.Info = make_basemap(p.plotting)
     }
     if (is.null(basemap.Info))
-      basemap.Info = make_basemap(p.plotting)
+      basemap.Info = make_basemap()
 
     #still no plot field?  use an existing field, but don't symbolize by it
     if (is.null(plot.field)) {
