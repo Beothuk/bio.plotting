@@ -22,12 +22,12 @@
 #' @param nclasses the default is \code{3}. Applies only when \code{use.buckets = T}.  Determines how many "bins" to use to display the data.  If unspecified, the value from p.plotting will be used.
 #' @return NULL, but notifies the user of how many positions lay outside of the map boundaries.
 #' @importFrom sp over
+#' @importFrom sp plot
 #' @importFrom sp spTransform
 #' @importFrom sp SpatialPointsDataFrame
 #' @importFrom classInt classIntervals
 #' @importFrom classInt findColours
 #' @importFrom classInt findCols
-#' @importFrom graphics plot
 #' @importFrom graphics legend
 #' @family plotting
 #' @author  Mike McMahon, \email{Mike.McMahon@@dfo-mpo.gc.ca}
