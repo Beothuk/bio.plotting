@@ -149,7 +149,7 @@ add_points <-
       leg.pt.cex = leg.data$ptSizer
     }
 
-    plot(
+    sp::plot(
       df.sp.tr,
       col = pnt.col,
       bg = pnt.bg,
