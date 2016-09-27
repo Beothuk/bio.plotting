@@ -23,6 +23,7 @@
 #' @return NULL, but notifies the user of how many positions lay outside of the map boundaries.
 #' @importFrom sp over
 #' @importFrom sp plot
+#' @importFrom graphics plot
 #' @importFrom sp spTransform
 #' @importFrom sp SpatialPointsDataFrame
 #' @importFrom classInt classIntervals
