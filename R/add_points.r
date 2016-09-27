@@ -63,7 +63,7 @@ add_points <-
     }
     if (is.null(basemap.Info))
       basemap.Info = make_basemap(p.plotting)
-    
+
     #still no plot field?  use an existing field, but don't symbolize by it
     if (is.null(plot.field)) {
       if (use.buckets == TRUE)
@@ -132,7 +132,7 @@ add_points <-
     pnt.cex = pt.cex.min
     leg.pnt.bg = pnt.bg
     leg.pt.cex = pnt.cex
-    
+
     if (use.buckets) {
       #evenly space classes between the min and max point sizes
       df.sp.tr@data$ptSizer = pt.cex.min + (((df.sp.tr@data$ptSizer * pt.cex.min) -
@@ -146,7 +146,7 @@ add_points <-
       leg.pnt.bg = leg.data$colcode
       leg.pt.cex = leg.data$ptSizer
     }
-    
+
     plot(
       df.sp.tr,
       col = pnt.col,
