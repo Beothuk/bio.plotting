@@ -127,7 +127,7 @@ add_points <-
                              ptSizer = findCols(classes))
       colour.df$ptSizer = as.numeric(colour.df$ptSizer)
       names(colour.df)[names(colour.df) == "varname"] <- plot.field
-      df.sp.tr = merge(df.sp.tr, unique(colour.df), all.x = T)
+      df.sp.tr@data = merge(df.sp.tr@data, unique(colour.df), all.x = T)
     }
     #Maybe overwrite these defaults
     ptnames = plot.field.pretty
@@ -150,7 +150,7 @@ add_points <-
       leg.pt.cex = leg.data$ptSizer
     }
 
-    sp::plot(
+    plot(
       df.sp.tr,
       col = pnt.col,
       bg = pnt.bg,
