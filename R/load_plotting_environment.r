@@ -10,18 +10,18 @@
 load_plotting_environment = function() {
   if (!exists("p.plotting"))
     p.plotting = list()
-  
+
   #make.basemap()
   p.plotting$df = NULL
   p.plotting$auto.setlimits = FALSE
   p.plotting$x.limits = c(-70, -54)
   p.plotting$y.limits = c(41, 50)
   p.plotting$crs.out = '+init=epsg:2220' #UTMZ20N
-  
+
   #add.points()
   p.plotting$lat.field = 'LATITUDE'
   p.plotting$lon.field = 'LONGITUDE'
-  p.plotting$plot.field = NULL
+  p.plotting$plot.field = 'EST_COMBINED_WT'
   p.plotting$plot.field.pretty = NULL
   p.plotting$show.legend = F
   p.plotting$pnt.style = 21
@@ -32,12 +32,12 @@ load_plotting_environment = function() {
   p.plotting$use.buckets = TRUE
   p.plotting$use.colours = TRUE
   p.plotting$nclasses = 3
-  
+
   # #get.known.areas() #on hold till central source works
   # p.plotting$known.areas = NULL
   # p.plotting$known.areas.add = T
   # p.plotting$known.areas.detailed = T
   # p.plotting$gis.archive.root.path = NULL
-  
+
   assign("p.plotting", p.plotting, envir = .GlobalEnv)
 }

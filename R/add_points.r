@@ -9,7 +9,7 @@
 #' @param basemap.Info a SpatialPolygons object (identifying the boundaries and projection of an existing plot). If none is provided, a default \code{make_basemap()} object will be used. object
 #' @param lat.field the default is \code{'LATITUDE'}. The name of the field holding latitude values (in decimal degrees).  If unspecified, the value from p.plotting will be used.
 #' @param lon.field the default is \code{'LONGITUDE'}.  The name of the field holding longitude values (in decimal degrees).  If unspecified, the value from p.plotting will be used.
-#' @param plot.field the default is \code{NULL}.  The field on which to symbolize the data.  If unspecified, the data can only be symbolized generically.
+#' @param plot.field the default is \code{'EST_COMBINED_WT'}.  The field on which to symbolize the data.  If unspecified, the data can only be symbolized generically.
 #' @param plot.field.pretty the default is \code{NULL}.  Applies only when \code{use.buckets = F}. This is a nice name to describe \code{plot.field} which will be displayed in the legend.  If unspecified, the value from p.plotting will be used.
 #' @param pnt.style the default is \code{21}. Determines the style of the points (any valid value for \code{pch} is acceptable).  If unspecified, the value from p.plotting will be used.
 #' @param pnt.col the default is \code{'black'}. This determines the colour outlining the points.  If unspecified, the value from p.plotting will be used.
@@ -38,7 +38,7 @@ add_points <-
            basemap.Info =  NULL,
            lat.field = "LATITUDE",
            lon.field = "LONGITUDE",
-           plot.field = NULL,
+           plot.field = 'EST_COMBINED_WT',
            plot.field.pretty = NULL,
            pnt.style = 21,
            pnt.col = 'black',
@@ -126,8 +126,10 @@ add_points <-
                              colcode,
                              ptSizer = findCols(classes))
       colour.df$ptSizer = as.numeric(colour.df$ptSizer)
-      names(colour.df)[names(colour.df) == "varname"] <- plot.field
+      #names(colour.df)[names(colour.df) == "varname"] <- plot.field
+      #browser()
       df.sp.tr@data = merge(df.sp.tr@data, unique(colour.df), all.x = T)
+      df.sp.tr@data = df.sp.tr@data[order(df.sp.tr@data$ORD),]
     }
     #Maybe overwrite these defaults
     ptnames = plot.field.pretty
