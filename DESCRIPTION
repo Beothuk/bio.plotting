@@ -9,7 +9,8 @@ Depends:
     mapdata,
     maps,
     classInt,
-    sp
+    sp,
+    rgdal
 Imports:
     grDevices,
     graphics,

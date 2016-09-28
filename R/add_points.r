@@ -26,6 +26,7 @@
 #' @importFrom graphics plot
 #' @importFrom sp spTransform
 #' @importFrom sp SpatialPointsDataFrame
+#' @importFrom rgdal spTransform
 #' @importFrom classInt classIntervals
 #' @importFrom classInt findColours
 #' @importFrom classInt findCols

@@ -5,10 +5,10 @@
 \title{add_points}
 \usage{
 add_points(df, basemap.Info = NULL, lat.field = "LATITUDE",
-  lon.field = "LONGITUDE", plot.field = NULL, plot.field.pretty = NULL,
-  pnt.style = 21, pnt.col = "black", pnt.bg = "red", pt.cex.min = 1,
-  pt.cex.max = 2, show.legend = FALSE, use.buckets = TRUE,
-  use.colours = TRUE, nclasses = 3)
+  lon.field = "LONGITUDE", plot.field = "EST_COMBINED_WT",
+  plot.field.pretty = NULL, pnt.style = 21, pnt.col = "black",
+  pnt.bg = "red", pt.cex.min = 1, pt.cex.max = 2, show.legend = FALSE,
+  use.buckets = TRUE, use.colours = TRUE, nclasses = 3)
 }
 \arguments{
 \item{df}{the dataframe to be plotted}
@@ -19,7 +19,7 @@ add_points(df, basemap.Info = NULL, lat.field = "LATITUDE",
 
 \item{lon.field}{the default is \code{'LONGITUDE'}.  The name of the field holding longitude values (in decimal degrees).  If unspecified, the value from p.plotting will be used.}
 
-\item{plot.field}{the default is \code{NULL}.  The field on which to symbolize the data.  If unspecified, the data can only be symbolized generically.}
+\item{plot.field}{the default is \code{'EST_COMBINED_WT'}.  The field on which to symbolize the data.  If unspecified, the data can only be symbolized generically.}
 
 \item{plot.field.pretty}{the default is \code{NULL}.  Applies only when \code{use.buckets = F}. This is a nice name to describe \code{plot.field} which will be displayed in the legend.  If unspecified, the value from p.plotting will be used.}
 

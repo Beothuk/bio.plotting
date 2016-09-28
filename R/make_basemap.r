@@ -37,6 +37,7 @@
 #' @importFrom sp Polygons
 #' @importFrom rgeos gBuffer
 #' @importFrom rgeos gIntersection
+#' @importFrom rgdal spTransform
 #' @importFrom maps map
 #' @importFrom maptools map2SpatialPolygons
 #' @import mapdata
