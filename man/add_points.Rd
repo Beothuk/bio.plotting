@@ -7,7 +7,7 @@
 add_points(df, basemap.Info = NULL, lat.field = "LATITUDE",
   lon.field = "LONGITUDE", plot.field = "EST_COMBINED_WT",
   plot.field.pretty = NULL, pnt.style = 21, pnt.col = "black",
-  pnt.bg = "red", pt.cex.min = 1, pt.cex.max = 2, show.legend = FALSE,
+  pnt.bg = "red", pnt.cex.min = 1, pnt.cex.max = 2, show.legend = TRUE,
   use.buckets = TRUE, use.colours = TRUE, nclasses = 3)
 }
 \arguments{
@@ -15,31 +15,31 @@ add_points(df, basemap.Info = NULL, lat.field = "LATITUDE",
 
 \item{basemap.Info}{a SpatialPolygons object (identifying the boundaries and projection of an existing plot). If none is provided, a default \code{make_basemap()} object will be used. object}
 
-\item{lat.field}{the default is \code{'LATITUDE'}. The name of the field holding latitude values (in decimal degrees).  If unspecified, the value from p.plotting will be used.}
+\item{lat.field}{the default is \code{'LATITUDE'}. The name of the field holding latitude values (in decimal degrees).}
 
-\item{lon.field}{the default is \code{'LONGITUDE'}.  The name of the field holding longitude values (in decimal degrees).  If unspecified, the value from p.plotting will be used.}
+\item{lon.field}{the default is \code{'LONGITUDE'}.  The name of the field holding longitude values (in decimal degrees).}
 
 \item{plot.field}{the default is \code{'EST_COMBINED_WT'}.  The field on which to symbolize the data.  If unspecified, the data can only be symbolized generically.}
 
-\item{plot.field.pretty}{the default is \code{NULL}.  Applies only when \code{use.buckets = F}. This is a nice name to describe \code{plot.field} which will be displayed in the legend.  If unspecified, the value from p.plotting will be used.}
+\item{plot.field.pretty}{the default is \code{NULL}.  Applies only when \code{use.buckets = F}. This is a nice name to describe \code{plot.field} which will be displayed in the legend.}
 
-\item{pnt.style}{the default is \code{21}. Determines the style of the points (any valid value for \code{pch} is acceptable).  If unspecified, the value from p.plotting will be used.}
+\item{pnt.style}{the default is \code{21}. Determines the style of the points (any valid value for \code{pch} is acceptable).}
 
-\item{pnt.col}{the default is \code{'black'}. This determines the colour outlining the points.  If unspecified, the value from p.plotting will be used.}
+\item{pnt.col}{the default is \code{'black'}. This determines the colour outlining the points.}
 
-\item{pnt.bg}{the default is \code{'red'}.  Applies only when \code{show.legend = T}.  Determines the colour of the points.  If unspecified, the value from p.plotting will be used.}
+\item{pnt.bg}{the default is \code{'red'}.  Applies only when \code{show.legend = T}.  Determines the colour of the points.}
 
-\item{pt.cex.min}{the default is \code{1}. When \code{use.buckets = F}, this determines the size of the points, and when \code{use.buckets = T}, this determines the minimum size of the points to be drawn.  If unspecified, the value from p.plotting will be used.}
+\item{pnt.cex.min}{the default is \code{1}. When \code{use.buckets = F}, this determines the size of the points, and when \code{use.buckets = T}, this determines the minimum size of the points to be drawn.}
 
-\item{pt.cex.max}{the default is \code{2}. When \code{use.buckets = F}, this is ignored, and when \code{use.buckets = T}, this determines the maximum size of the points to be drawn.  If unspecified, the value from p.plotting will be used.}
+\item{pnt.cex.max}{the default is \code{2}. When \code{use.buckets = F}, this is ignored, and when \code{use.buckets = T}, this determines the maximum size of the points to be drawn.}
 
-\item{show.legend}{the default is \code{FALSE}.  Determines whether or not a legend will be displayed.  If unspecified, the value from p.plotting will be used.}
+\item{show.legend}{the default is \code{FALSE}.  Determines whether or not a legend will be displayed.}
 
-\item{use.buckets}{the default is \code{TRUE}. If \code{use.buckets = F}, all points are identical, but if \code{use.buckets = T}, data points are scaled, and the colour intensity varies according to the value of \code{plot.field}.  If unspecified, the value from p.plotting will be used.}
+\item{use.buckets}{the default is \code{TRUE}. If \code{use.buckets = F}, all points are identical, but if \code{use.buckets = T}, data points are scaled, and the colour intensity varies according to the value of \code{plot.field}.}
 
-\item{use.colours}{the default is \code{TRUE}. If \code{use.colour = FALSE}, all points will be coloured using the value of \code{pnt.bg}.  If set to \code{TRUE}, the the intensity of the colour will also scale with the size of the markers, according to the value of \code{plot.field}.  If unspecified, the value from p.plotting will be used.}
+\item{use.colours}{the default is \code{TRUE}. If \code{use.colour = FALSE}, all points will be coloured using the value of \code{pnt.bg}.  If set to \code{TRUE}, the the intensity of the colour will also scale with the size of the markers, according to the value of \code{plot.field}.}
 
-\item{nclasses}{the default is \code{3}. Applies only when \code{use.buckets = T}.  Determines how many "bins" to use to display the data.  If unspecified, the value from p.plotting will be used.}
+\item{nclasses}{the default is \code{3}. Applies only when \code{use.buckets = T}.  Determines how many "bins" to use to display the data.}
 }
 \value{
 NULL, but notifies the user of how many positions lay outside of the map boundaries.
@@ -56,7 +56,6 @@ field, and the colour and size of the points varies with the values in \code{plo
 Mike McMahon, \email{Mike.McMahon@dfo-mpo.gc.ca}
 }
 \seealso{
-Other plotting: \code{\link{load_plotting_environment}},
-  \code{\link{make_basemap}}
+Other plotting: \code{\link{make_basemap}}
 }
 

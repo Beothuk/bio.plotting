@@ -14,23 +14,22 @@ the data.}
 
 \item{auto.setlimits}{default is \code{FALSE}. This controls the extent of the resultant map.  If \code{auto.setlimits = T} (and a
 data frame with values for \code{LATITUDE} and \code{LONGITUDE} has been sent), it will use the data to determine the plot boundaries
-(plus a 15 percent padding factor).  If unspecified, the value from p.plotting will be used.}
+(plus a 15 percent padding factor).}
 
 \item{crs.out}{default is \code{'+init=epsg:2220'} (UTM Zone 20 N).  This is the desired projection of the final plot.}
 
 \item{x.limits}{default is \code{c(-70, -54)} but an appropriate value would be in the form of \code{c(-70,-54)}. These are the default
-bounding longitudes. If unspecified, the value from p.plotting will be used.}
+bounding longitudes.}
 
 \item{y.limits}{default is \code{c(41, 50)} but an appropriate value would be in the form of  is \code{c(41,50)}. These are the default
-bounding latitudes for extent. If unspecified, the value from p.plotting will be used.}
+bounding latitudes for extent.}
 }
 \value{
 a SpatialPolygons object corresponding to the bounding box of the plot.
 }
 \description{
 This function creates a simple basemap on which to plot data.  The plot consists of a (filled) coastline, with a labelled
-lat-lon grid.  Defaults for the plot are stored in \code{p.plotting} which can be loaded via
-\code{p.plotting=bio.plotting{load_environment()}}.  When \code{auto.setlimits = T} and a dataframe is provided, the extents of the plot
+lat-lon grid.  When \code{auto.setlimits = T} and a dataframe is provided, the extents of the plot
 will automatically match the extent of the supplied data (with a 15 percent buffer around the edges).
 Additionally, the output projection of the plot can be specified (e.g. \code{"+init=epsg:2220"} would result in UTM Zone 20 N, while
 \code{"+init=epsg:4326"} would be an unprojected WGS84 plot. Many values are possible and/or appropriate for the value of \code{crs.out},
@@ -41,7 +40,6 @@ Bathymetry will be added to this in the near future, and the function call will 
 whether or not it should be plotted.
 }
 \seealso{
-Other plotting: \code{\link{add_points}},
-  \code{\link{load_plotting_environment}}
+Other plotting: \code{\link{add_points}}
 }
 
