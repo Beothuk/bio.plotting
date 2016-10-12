@@ -7,19 +7,19 @@
 #' field, and the colour and size of the points varies with the values in \code{plot.field}.
 #' @param df the dataframe to be plotted
 #' @param basemap.Info a SpatialPolygons object (identifying the boundaries and projection of an existing plot). If none is provided, a default \code{make_basemap()} object will be used. object
-#' @param lat.field the default is \code{'LATITUDE'}. The name of the field holding latitude values (in decimal degrees).  
-#' @param lon.field the default is \code{'LONGITUDE'}.  The name of the field holding longitude values (in decimal degrees).  
+#' @param lat.field the default is \code{'LATITUDE'}. The name of the field holding latitude values (in decimal degrees).
+#' @param lon.field the default is \code{'LONGITUDE'}.  The name of the field holding longitude values (in decimal degrees).
 #' @param plot.field the default is \code{'EST_COMBINED_WT'}.  The field on which to symbolize the data.  If unspecified, the data can only be symbolized generically.
-#' @param plot.field.pretty the default is \code{NULL}.  Applies only when \code{use.buckets = F}. This is a nice name to describe \code{plot.field} which will be displayed in the legend.  
-#' @param pnt.style the default is \code{21}. Determines the style of the points (any valid value for \code{pch} is acceptable).  
-#' @param pnt.col the default is \code{'black'}. This determines the colour outlining the points.  
-#' @param pnt.bg the default is \code{'red'}.  Applies only when \code{show.legend = T}.  Determines the colour of the points.  
-#' @param pnt.cex.min the default is \code{1}. When \code{use.buckets = F}, this determines the size of the points, and when \code{use.buckets = T}, this determines the minimum size of the points to be drawn.  
-#' @param pnt.cex.max the default is \code{2}. When \code{use.buckets = F}, this is ignored, and when \code{use.buckets = T}, this determines the maximum size of the points to be drawn.  
-#' @param show.legend the default is \code{FALSE}.  Determines whether or not a legend will be displayed.  
-#' @param use.buckets the default is \code{TRUE}. If \code{use.buckets = F}, all points are identical, but if \code{use.buckets = T}, data points are scaled, and the colour intensity varies according to the value of \code{plot.field}.  
-#' @param use.colours the default is \code{TRUE}. If \code{use.colour = FALSE}, all points will be coloured using the value of \code{pnt.bg}.  If set to \code{TRUE}, the the intensity of the colour will also scale with the size of the markers, according to the value of \code{plot.field}.  
-#' @param nclasses the default is \code{3}. Applies only when \code{use.buckets = T}.  Determines how many "bins" to use to display the data.  
+#' @param plot.field.pretty the default is \code{NULL}.  Applies only when \code{use.buckets = F}. This is a nice name to describe \code{plot.field} which will be displayed in the legend.
+#' @param pnt.style the default is \code{21}. Determines the style of the points (any valid value for \code{pch} is acceptable).
+#' @param pnt.col the default is \code{'black'}. This determines the colour outlining the points.
+#' @param pnt.bg the default is \code{'red'}.  Applies only when \code{show.legend = T}.  Determines the colour of the points.
+#' @param pnt.cex.min the default is \code{1}. When \code{use.buckets = F}, this determines the size of the points, and when \code{use.buckets = T}, this determines the minimum size of the points to be drawn.
+#' @param pnt.cex.max the default is \code{2}. When \code{use.buckets = F}, this is ignored, and when \code{use.buckets = T}, this determines the maximum size of the points to be drawn.
+#' @param show.legend the default is \code{FALSE}.  Determines whether or not a legend will be displayed.
+#' @param use.buckets the default is \code{TRUE}. If \code{use.buckets = F}, all points are identical, but if \code{use.buckets = T}, data points are scaled, and the colour intensity varies according to the value of \code{plot.field}.
+#' @param use.colours the default is \code{TRUE}. If \code{use.colour = FALSE}, all points will be coloured using the value of \code{pnt.bg}.  If set to \code{TRUE}, the the intensity of the colour will also scale with the size of the markers, according to the value of \code{plot.field}.
+#' @param nclasses the default is \code{3}. Applies only when \code{use.buckets = T}.  Determines how many "bins" to use to display the data.
 #' @return NULL, but notifies the user of how many positions lay outside of the map boundaries.
 #' @importFrom sp over
 #' @importFrom sp plot
@@ -53,7 +53,7 @@ add_points <-
       basemap.Info = make_basemap()
 
     nullsymb = 3
-    
+
     #still no plot field?  use an existing field, but don't symbolize by it
     if (is.null(plot.field)) {
       if (use.buckets == TRUE)
@@ -76,7 +76,7 @@ add_points <-
     df.sp.tr$over = over(df.sp.tr, basemap.Info)
     n.invalidpts = NROW(df.sp.tr[is.na(df.sp.tr$over), ])
     df.sp.tr@data$symbol = nullsymb
-      
+
     n.invalidpts = NROW(df.sp.tr[is.na(df.sp.tr$over), ])
     #unique values of plot field
     u.values = NROW(unique(df.sp.tr@data[!is.na(df.sp.tr@data[plot.field]), ][plot.field]))
@@ -137,8 +137,9 @@ add_points <-
     }
 
     df.sp.tr@data$symbol[!is.na(df.sp.tr@data[plot.field]) & (df.sp.tr@data[plot.field]>0)] = pnt.style
+    df.sp.tr@data$symbol[is.na(df.sp.tr@data[plot.field]) | (df.sp.tr@data[plot.field]==0)] = nullsymb
     df.sp.tr@data$ptSizer[is.na(df.sp.tr@data[plot.field]) | (df.sp.tr@data[plot.field]==0)]= (pnt.cex.min/2.5)
-    
+
 
      plot(
       df.sp.tr,
@@ -153,25 +154,22 @@ add_points <-
       x.bmp = diff(basemap.Info@bbox[1, ])*.075
       if (use.buckets){
         legend.df=unique(df.sp.tr@data[,c('symbol','ptSizer', 'colcode')])
-        #sorting by symbol first should put NA (i.e. nullsymb) at the top 
+        #sorting by symbol first should put NA (i.e. nullsymb) at the top
         legend.df=legend.df[order(legend.df[,c('symbol')],legend.df[,c('ptSizer')]),]
-        #leg.labels
-        if ((classes$brks[1]==classes$brks[2]) & (classes$brks[2]==1)){
-        leg.labels[1] = 'null' 
-        }
       }else{
         legend.df=unique(df.sp.tr@data[,c('symbol','ptSizer')])
         legend.df$colcode = pnt.bg
         legend.df$colcode[legend.df$symbol==nullsymb] = 'black'
-        if (nrow(legend.df[legend.df$symbol ==nullsymb,])>0)  {
-          leg.labels = c('null',leg.labels)
-        }
+      }
+      #leg.labels
+      if (legend.df$symbol[1] == nullsymb){
+        leg.labels= c('null',leg.labels)
       }
        legend(
          legend = leg.labels,
          inset = 2,
          x= min(basemap.Info@bbox[1, ])+x.bmp,
-         y = max(basemap.Info@bbox[2, ])-y.bmp, 
+         y = max(basemap.Info@bbox[2, ])-y.bmp,
          bty="o",y.intersp=0.75,x.intersp=0.75,
          xjust= 0,
          yjust=0.5,
