@@ -162,7 +162,9 @@ add_points <-
         legend.df$colcode[legend.df$symbol==nullsymb] = 'black'
       }
       #leg.labels
-      if (legend.df$symbol[1] == nullsymb){
+      if (unique(legend.df$symbol == nullsymb)) {
+        leg.labels= 'null'
+      }else if (legend.df$symbol[1] == nullsymb){
         leg.labels= c('null',leg.labels)
       }
        legend(
