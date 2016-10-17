@@ -136,7 +136,7 @@ make_basemap = function(df = NULL,
                           
                           coastline = map(
                             "worldHires",
-                            regions = c("Canada", "USA", "Greenland"),
+                            regions = c("Canada", "USA", "France", "Greenland"),
                             xlim = x.limits,
                             ylim = y.limits,
                             col = "blue",
