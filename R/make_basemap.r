@@ -1,20 +1,16 @@
 #' @title make_basemap
 #' @description This function creates a simple basemap on which to plot data.  The plot consists of a (filled) coastline, with a labelled
-#' lat-lon grid.  When \code{auto.setlimits = T} and a dataframe is provided, the extents of the plot
-#' will automatically match the extent of the supplied data (with a 15 percent buffer around the edges).
+#' lat-lon grid.  When a dataframe is provided, the extents of the plot will automatically match the extent of the supplied data (with a 15 percent buffer around the edges).
 #' Additionally, the output projection of the plot can be specified (e.g. \code{"+init=epsg:2220"} would result in UTM Zone 20 N, while
 #' \code{"+init=epsg:4326"} would be an unprojected WGS84 plot. Many values are possible and/or appropriate for the value of \code{crs.out},
 #' depending on the data. Check \code{\link[sp]{CRS-class}} for more options.
-#' @param df default is \code{NULL}.  You can optionally send a dataframe to this function, which can be have the plot extent match
+#' @param df default is \code{NULL}.  You can optionally send a dataframe with values for \code{LATITUDE} and \code{LONGITUDE} to this function, which can be have the plot extent match
 #' the data.
-#' @param auto.setlimits default is \code{FALSE}. This controls the extent of the resultant map.  If \code{auto.setlimits = T} (and a
-#' data frame with values for \code{LATITUDE} and \code{LONGITUDE} has been sent), it will use the data to determine the plot boundaries
-#' (plus a 15 percent padding factor).  
 #' @param crs.out default is \code{'+init=epsg:2220'} (UTM Zone 20 N).  This is the desired projection of the final plot.
 #' @param x.limits default is \code{c(-70, -54)} but an appropriate value would be in the form of \code{c(-70,-54)}. These are the default
-#' bounding longitudes. 
+#' bounding longitudes.
 #' @param y.limits default is \code{c(41, 50)} but an appropriate value would be in the form of  is \code{c(41,50)}. These are the default
-#' bounding latitudes for extent. 
+#' bounding latitudes for extent.
 #' @return a SpatialPolygons object corresponding to the bounding box of the plot.
 #' @note Bathymetry will be added to this in the near future, and the function call will be modified to include a flag that will indicate
 #' whether or not it should be plotted.
@@ -41,19 +37,18 @@
 #' @family plotting
 #' @export
 make_basemap = function(df = NULL,
-                        auto.setlimits = FALSE,
                         crs.out = '+init=epsg:2220',
                         x.limits = c(-70, -54),
                         y.limits = c(41, 50)
                         )
                         {
                           crs.in = "+init=epsg:4326"
-                          
-                          if (auto.setlimits == T & !is.null(df)) {
+
+                          if (!is.null(df)) {
                             x.limits = range(df$LONGITUDE)
                             y.limits = range(df$LATITUDE)
                           }
-                          
+
                           if (diff(y.limits) <= 1) {
                             #tiny map
                             y.maj = 0.25
@@ -65,7 +60,7 @@ make_basemap = function(df = NULL,
                             y.maj = 1
                             y.min = 0.5
                           }
-                          
+
                           if (diff(x.limits) <= 1) {
                             x.maj = 0.25
                             x.min = 0.05
@@ -77,16 +72,16 @@ make_basemap = function(df = NULL,
                             x.min = 0.5
                           }
 
-                          if (auto.setlimits == T & !is.null(df)) {
+                          if (!is.null(df)) {
                             #find range, pad it by amount determined above, and round to nice value
                             x.limits = round(c((min(df$LONGITUDE)-(0.5*x.maj)), (max(df$LONGITUDE)+(0.5*x.maj)))/ x.maj) * x.maj
                             y.limits = round(c((min(df$LATITUDE)-(0.5*y.maj)), (max(df$LATITUDE)+(0.5*y.maj))) / y.maj) * y.maj
                           }
-                          
+
                           limits = data.frame(X = x.limits, Y = y.limits)
                           coordinates(limits) = c("X", "Y")
                           proj4string(limits) = CRS(crs.in)
-                          
+
                           boundbox = SpatialPolygons(list(Polygons(list(Polygon(
                             cbind(
                               xx = c(
@@ -133,7 +128,7 @@ make_basemap = function(df = NULL,
                             norths = seq(boundbox@"bbox"[2], boundbox@"bbox"[4], by = y.min)
                           )
                           these.gridlines.pr = spTransform(these.gridlines, CRS(crs.out))
-                          
+
                           coastline = map(
                             "worldHires",
                             regions = c("Canada", "USA", "France", "Greenland"),
@@ -152,7 +147,7 @@ make_basemap = function(df = NULL,
                           coastline.sp.clip = gIntersection(gBuffer(coastline.sp, byid = TRUE, width =
                                                                       0),
                                                             spTransform(boundbox, CRS(crs.out)))
-                          
+
                           par(
                             mar = c(1, 1, 1, 1),
                             xaxs = "i",
@@ -165,7 +160,7 @@ make_basemap = function(df = NULL,
                                    border = "transparent",
                                    add = F,
                                    lwd = 1) #add transparent boundbox first to ensure all data shown
-                          
+
                           if (!is.null(coastline.sp.clip))
                             sp::plot(
                               coastline.sp.clip,
@@ -175,7 +170,7 @@ make_basemap = function(df = NULL,
                               axes = F,
                               add = T
                             )  #add coastline
-                          
+
                           sp::plot(
                             these.gridlines.pr,
                             col = "grey77",

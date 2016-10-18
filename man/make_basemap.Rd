@@ -4,17 +4,12 @@
 \alias{make_basemap}
 \title{make_basemap}
 \usage{
-make_basemap(df = NULL, auto.setlimits = FALSE,
-  crs.out = "+init=epsg:2220", x.limits = c(-70, -54), y.limits = c(41,
-  50))
+make_basemap(df = NULL, crs.out = "+init=epsg:2220", x.limits = c(-70,
+  -54), y.limits = c(41, 50))
 }
 \arguments{
-\item{df}{default is \code{NULL}.  You can optionally send a dataframe to this function, which can be have the plot extent match
+\item{df}{default is \code{NULL}.  You can optionally send a dataframe with values for \code{LATITUDE} and \code{LONGITUDE} to this function, which can be have the plot extent match
 the data.}
-
-\item{auto.setlimits}{default is \code{FALSE}. This controls the extent of the resultant map.  If \code{auto.setlimits = T} (and a
-data frame with values for \code{LATITUDE} and \code{LONGITUDE} has been sent), it will use the data to determine the plot boundaries
-(plus a 15 percent padding factor).}
 
 \item{crs.out}{default is \code{'+init=epsg:2220'} (UTM Zone 20 N).  This is the desired projection of the final plot.}
 
@@ -29,8 +24,7 @@ a SpatialPolygons object corresponding to the bounding box of the plot.
 }
 \description{
 This function creates a simple basemap on which to plot data.  The plot consists of a (filled) coastline, with a labelled
-lat-lon grid.  When \code{auto.setlimits = T} and a dataframe is provided, the extents of the plot
-will automatically match the extent of the supplied data (with a 15 percent buffer around the edges).
+lat-lon grid.  When a dataframe is provided, the extents of the plot will automatically match the extent of the supplied data (with a 15 percent buffer around the edges).
 Additionally, the output projection of the plot can be specified (e.g. \code{"+init=epsg:2220"} would result in UTM Zone 20 N, while
 \code{"+init=epsg:4326"} would be an unprojected WGS84 plot. Many values are possible and/or appropriate for the value of \code{crs.out},
 depending on the data. Check \code{\link[sp]{CRS-class}} for more options.

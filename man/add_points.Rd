@@ -4,16 +4,17 @@
 \alias{add_points}
 \title{add_points}
 \usage{
-add_points(df, basemap.Info = NULL, lat.field = "LATITUDE",
-  lon.field = "LONGITUDE", plot.field = "EST_COMBINED_WT",
-  plot.field.pretty = NULL, pnt.style = 21, pnt.col = "black",
-  pnt.bg = "red", pnt.cex.min = 1, pnt.cex.max = 2, show.legend = TRUE,
-  use.buckets = TRUE, use.colours = TRUE, nclasses = 3)
+add_points(df, basemap = NULL, lat.field = "LATITUDE",
+  lon.field = "LONGITUDE", plot.field = NULL, plot.field.pretty = NULL,
+  pnt.style = 21, pnt.col = "black", pnt.bg = "red", pnt.cex.min = 1,
+  pnt.cex.max = 2, show.legend = TRUE, leg.pos = "topleft",
+  use.buckets = TRUE, use.colours = TRUE, bucket.style = "quantile",
+  bucket.fixed.breaks = NULL, nclasses = 3)
 }
 \arguments{
 \item{df}{the dataframe to be plotted}
 
-\item{basemap.Info}{a SpatialPolygons object (identifying the boundaries and projection of an existing plot). If none is provided, a default \code{make_basemap()} object will be used. object}
+\item{basemap}{a SpatialPolygons object (identifying the boundaries and projection of an existing plot). If none is provided, a default \code{make_basemap()} object will be used. object}
 
 \item{lat.field}{the default is \code{'LATITUDE'}. The name of the field holding latitude values (in decimal degrees).}
 
@@ -35,9 +36,15 @@ add_points(df, basemap.Info = NULL, lat.field = "LATITUDE",
 
 \item{show.legend}{the default is \code{FALSE}.  Determines whether or not a legend will be displayed.}
 
+\item{leg.pos}{the default is \code{'topleft'}.  Determines where on the plot the legend will be displayed (if \code{show.legend=TRUE}).}
+
 \item{use.buckets}{the default is \code{TRUE}. If \code{use.buckets = F}, all points are identical, but if \code{use.buckets = T}, data points are scaled, and the colour intensity varies according to the value of \code{plot.field}.}
 
 \item{use.colours}{the default is \code{TRUE}. If \code{use.colour = FALSE}, all points will be coloured using the value of \code{pnt.bg}.  If set to \code{TRUE}, the the intensity of the colour will also scale with the size of the markers, according to the value of \code{plot.field}.}
+
+\item{bucket.style}{the default is \code{quantile} chosen style: one of "fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust", "bclust", "fisher", or "jenks"}
+
+\item{bucket.fixed.breaks}{the default is \code{NULL} if the \code{bucket.style} is set to "fixed", a vector of the desired upper ends of the desired breaks must be supplied (e.g. \code{c(2, 5, 10, 100, 500.10000, 100000)})}
 
 \item{nclasses}{the default is \code{3}. Applies only when \code{use.buckets = T}.  Determines how many "bins" to use to display the data.}
 }
@@ -49,7 +56,7 @@ This function adds points to an existing plot.  The advantage over \code{points(
 input, it will automatically reproject the points, and trim them such that only positions that fall within the map boundaries are shown.
 The user is notified of how many positions lay outside of the map boundaries.
 Additionally, the input data can either be symbolized generically (i.e. one style), or it can classify the points according to the values
-stored in a field identified by the user using the flag \code{use.buckets}.  If \{code{use.buckets=T}, data is symbolized by a selected
+stored in a field identified by the user using the flag \code{use.buckets}.  If \code{use.buckets=T}, data is symbolized by a selected
 field, and the colour and size of the points varies with the values in \code{plot.field}.
 }
 \author{

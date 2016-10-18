@@ -3,10 +3,10 @@
 #' input, it will automatically reproject the points, and trim them such that only positions that fall within the map boundaries are shown.
 #' The user is notified of how many positions lay outside of the map boundaries.
 #' Additionally, the input data can either be symbolized generically (i.e. one style), or it can classify the points according to the values
-#' stored in a field identified by the user using the flag \code{use.buckets}.  If \{code{use.buckets=T}, data is symbolized by a selected
+#' stored in a field identified by the user using the flag \code{use.buckets}.  If \code{use.buckets=T}, data is symbolized by a selected
 #' field, and the colour and size of the points varies with the values in \code{plot.field}.
 #' @param df the dataframe to be plotted
-#' @param basemap.Info a SpatialPolygons object (identifying the boundaries and projection of an existing plot). If none is provided, a default \code{make_basemap()} object will be used. object
+#' @param basemap a SpatialPolygons object (identifying the boundaries and projection of an existing plot). If none is provided, a default \code{make_basemap()} object will be used. object
 #' @param lat.field the default is \code{'LATITUDE'}. The name of the field holding latitude values (in decimal degrees).
 #' @param lon.field the default is \code{'LONGITUDE'}.  The name of the field holding longitude values (in decimal degrees).
 #' @param plot.field the default is \code{'EST_COMBINED_WT'}.  The field on which to symbolize the data.  If unspecified, the data can only be symbolized generically.
@@ -17,8 +17,11 @@
 #' @param pnt.cex.min the default is \code{1}. When \code{use.buckets = F}, this determines the size of the points, and when \code{use.buckets = T}, this determines the minimum size of the points to be drawn.
 #' @param pnt.cex.max the default is \code{2}. When \code{use.buckets = F}, this is ignored, and when \code{use.buckets = T}, this determines the maximum size of the points to be drawn.
 #' @param show.legend the default is \code{FALSE}.  Determines whether or not a legend will be displayed.
+#' @param leg.pos the default is \code{'topleft'}.  Determines where on the plot the legend will be displayed (if \code{show.legend=TRUE}).
 #' @param use.buckets the default is \code{TRUE}. If \code{use.buckets = F}, all points are identical, but if \code{use.buckets = T}, data points are scaled, and the colour intensity varies according to the value of \code{plot.field}.
 #' @param use.colours the default is \code{TRUE}. If \code{use.colour = FALSE}, all points will be coloured using the value of \code{pnt.bg}.  If set to \code{TRUE}, the the intensity of the colour will also scale with the size of the markers, according to the value of \code{plot.field}.
+#' @param bucket.style the default is \code{quantile} chosen style: one of "fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust", "bclust", "fisher", or "jenks"
+#' @param bucket.fixed.breaks the default is \code{NULL} if the \code{bucket.style} is set to "fixed", a vector of the desired upper ends of the desired breaks must be supplied (e.g. \code{c(2, 5, 10, 100, 500.10000, 100000)})
 #' @param nclasses the default is \code{3}. Applies only when \code{use.buckets = T}.  Determines how many "bins" to use to display the data.
 #' @return NULL, but notifies the user of how many positions lay outside of the map boundaries.
 #' @importFrom sp over
@@ -35,10 +38,10 @@
 #' @export
 add_points <-
   function(df,
-           basemap.Info =  NULL,
+           basemap =  NULL,
            lat.field = "LATITUDE",
            lon.field = "LONGITUDE",
-           plot.field = 'EST_COMBINED_WT',
+           plot.field = NULL,
            plot.field.pretty = NULL,
            pnt.style = 21,
            pnt.col = 'black',
@@ -46,13 +49,23 @@ add_points <-
            pnt.cex.min = 1,
            pnt.cex.max = 2,
            show.legend = TRUE,
+           leg.pos = 'topleft',
            use.buckets = TRUE,
            use.colours = TRUE,
+           bucket.style = 'quantile',
+           bucket.fixed.breaks = NULL,
            nclasses = 3) {
-    if (is.null(basemap.Info))
-      basemap.Info = make_basemap()
+#if (bucket.style=="fixed")stop("bucket.style = 'fixed' not yet supported")
+
+    if (is.null(basemap))
+      basemap = make_basemap(df)
 
     nullsymb = 3
+    nullsymbsize = pnt.cex.min/2.5
+
+    get_pnt_size <- function(origpt, pnt.cex.min = pnt.cex.min, pnt.cex.max = pnt.cex.max, nclasses = nclasses){
+      return(pnt.cex.min + (((origpt * pnt.cex.min) - pnt.cex.min) * ((pnt.cex.max - pnt.cex.min) / (nclasses - 1))))
+    }
 
     #still no plot field?  use an existing field, but don't symbolize by it
     if (is.null(plot.field)) {
@@ -62,9 +75,15 @@ add_points <-
           valid field to plot.field.  In the meantime, plotting generically...\n"
         )
       plot.field = lat.field
-      plot.field.pretty = "Generic"
+      plot.field.pretty = "<no plot field>"
       use.buckets = FALSE
+      legend.df2 = data.frame(categdesc = "data",
+                              symbol = pnt.style,
+                              ptSizer = pnt.cex.min,
+                              categcol = pnt.bg)
+
     }
+    if (is.null(plot.field.pretty)) plot.field.pretty=plot.field
     df.xy = df[, c(lon.field, lat.field)]
     df.sp <-
       SpatialPointsDataFrame(
@@ -72,8 +91,8 @@ add_points <-
         data = df,
         proj4string = CRS("+init=epsg:4326")
       )
-    df.sp.tr = spTransform(df.sp, CRS(basemap.Info@proj4string@projargs))
-    df.sp.tr$over = over(df.sp.tr, basemap.Info)
+    df.sp.tr = spTransform(df.sp, CRS(basemap@proj4string@projargs))
+    df.sp.tr$over = over(df.sp.tr, basemap)
     n.invalidpts = NROW(df.sp.tr[is.na(df.sp.tr$over), ])
     df.sp.tr@data$symbol = nullsymb
 
@@ -104,7 +123,8 @@ add_points <-
       classes = classIntervals(
         df.classes[, plot.field],
         n = nclasses,
-        style = "quantile",
+        style = bucket.style,
+        fixedBreaks = bucket.fixed.breaks,
         dataPrecision = 0
       )
       if (use.colours) {
@@ -112,36 +132,47 @@ add_points <-
       } else{
         colcode = findColours(classes, c(pnt.bg, pnt.bg)) #hack to use bg colour only
       }
+      #get the possible symbology values from the classes - these may not exist in the data
+      symbol.df = data.frame(
+        ptsize = seq(1,length(classes$brks)-1),
+        symbol = rep(pnt.style,length(classes$brks)-1),
+        categ = classes$brks[1:length(classes$brks)-1],
+        categdesc = names(attr(colcode, "table")),
+        categcol = attr(colcode, "palette")
+      )
+
+      symbol.df$ptSizer = get_pnt_size(symbol.df$ptsize, pnt.cex.min, pnt.cex.max, nclasses)
+
       colour.df = data.frame(varname = classes$var,
+                             #classcol = attr(colcode, "palette"),
                              colcode,
-                             ptSizer = findCols(classes))
-      colour.df$ptSizer = as.numeric(colour.df$ptSizer)
+                             ptsize = findCols(classes))
+      colour.df$ptsize = as.numeric(colour.df$ptsize)
       df.sp.tr@data = merge(df.sp.tr@data, unique(colour.df), by.x=plot.field, by.y='varname', all.x = T)
       df.sp.tr@data = df.sp.tr@data[order(df.sp.tr@data$ORD),]
-      df.sp.tr@data$ptSizer = pnt.cex.min + (((df.sp.tr@data$ptSizer * pnt.cex.min) -
-                                                pnt.cex.min) * ((pnt.cex.max - pnt.cex.min) / (nclasses - 1)))
+
+      df.sp.tr@data$ptSizer = get_pnt_size(df.sp.tr@data$ptsize, pnt.cex.min, pnt.cex.max, nclasses)
 
       pnt.cex = df.sp.tr@data$ptSizer
       pnt.bg = df.sp.tr@data$colcode
-      leg.labels = names(attr(colcode, "table"))
-      leg.labels = gsub(",", "-", leg.labels)
-      leg.data = unique(df.sp.tr@data[c("ptSizer", "colcode")])
-      leg.data = leg.data[order(leg.data$ptSizer), ]
+      leg.data = symbol.df[c("ptSizer", "categcol")]
       leg.pnt.bg = leg.data$colcode
       leg.pt.cex = leg.data$ptSizer
     }else{
-      leg.labels = "data"
-      leg.pnt.bg = pnt.bg
-      leg.pt.cex = pnt.cex.min
+      symbol.df = data.frame(
+        ptSizer = pnt.cex.min,
+        symbol = pnt.style,
+        #categ = classes$brks[1:length(classes$brks)-1],
+        categdesc = "data",
+        categcol = pnt.bg
+      )
       df.sp.tr@data$ptSizer = pnt.cex.min
     }
 
     df.sp.tr@data$symbol[!is.na(df.sp.tr@data[plot.field]) & (df.sp.tr@data[plot.field]>0)] = pnt.style
     df.sp.tr@data$symbol[is.na(df.sp.tr@data[plot.field]) | (df.sp.tr@data[plot.field]==0)] = nullsymb
-    df.sp.tr@data$ptSizer[is.na(df.sp.tr@data[plot.field]) | (df.sp.tr@data[plot.field]==0)]= (pnt.cex.min/2.5)
-
-
-     plot(
+    df.sp.tr@data$ptSizer[is.na(df.sp.tr@data[plot.field]) | (df.sp.tr@data[plot.field]==0)]= nullsymbsize
+    plot(
       df.sp.tr,
       col = pnt.col,
       bg = pnt.bg,
@@ -150,35 +181,55 @@ add_points <-
       add = T
     )
     if (show.legend) {
-      y.bmp = diff(basemap.Info@bbox[2, ])*.125
-      x.bmp = diff(basemap.Info@bbox[1, ])*.075
-      if (use.buckets){
-        legend.df=unique(df.sp.tr@data[,c('symbol','ptSizer', 'colcode')])
-        #sorting by symbol first should put NA (i.e. nullsymb) at the top
-        legend.df=legend.df[order(legend.df[,c('symbol')],legend.df[,c('ptSizer')]),]
-      }else{
-        legend.df=unique(df.sp.tr@data[,c('symbol','ptSizer')])
-        legend.df$colcode = pnt.bg
-        legend.df$colcode[legend.df$symbol==nullsymb] = 'black'
+      legend.df = symbol.df[c("symbol","categdesc", "ptSizer", "categcol")]
+      legend.df=legend.df[order(legend.df[,c('symbol')],legend.df[,c('ptSizer')]),]
+
+      if (any(df.sp.tr@data$symbol ==nullsymb)){
+        nullrow = data.frame(symbol=nullsymb, categdesc = "null", ptSizer= nullsymbsize, categcol="#000000")
+        legend.df2 = do.call("rbind", list(nullrow, legend.df))
       }
-      #leg.labels
-      if (unique(legend.df$symbol == nullsymb)) {
-        leg.labels= 'null'
-      }else if (legend.df$symbol[1] == nullsymb){
-        leg.labels= c('null',leg.labels)
+
+      #create this first so we can detect height and width for placement
+      leg.scratch =   legend(
+        title = plot.field.pretty,
+        legend = legend.df2$categdesc,
+        inset = 2,
+        x=  max(basemap@bbox[1, ]),
+        y = max(basemap@bbox[2, ]),
+        bty="o",y.intersp=0.75,x.intersp=0.75,
+        xjust= 0,
+        yjust=0.5,
+        pt.lwd=0.6,
+        plot = F
+      )
+      y.bmp = diff(basemap@bbox[2, ])*0.125
+      x.bmp = diff(basemap@bbox[1, ])*0.075
+      if (leg.pos == 'topleft'){
+        leg.x= min(basemap@bbox[1, ])+x.bmp
+        leg.y = max(basemap@bbox[2, ])-(leg.scratch$rect$h)+y.bmp
+      }else if (leg.pos == 'topright'){
+        leg.x= max(basemap@bbox[1, ])-(leg.scratch$rect$w+x.bmp)
+        leg.y = max(basemap@bbox[2, ])-(leg.scratch$rect$h)+y.bmp
+      } else  if (leg.pos == 'bottomleft'){
+        leg.x= min(basemap@bbox[1, ])+x.bmp
+        leg.y = min(basemap@bbox[2, ])+(1.5*y.bmp)
+      }else if (leg.pos == 'bottomright'){
+        leg.x= max(basemap@bbox[1, ])-(leg.scratch$rect$w+x.bmp)
+        leg.y =  min(basemap@bbox[2, ])+(1.5*y.bmp)
       }
-       legend(
-         legend = leg.labels,
-         inset = 2,
-         x= min(basemap.Info@bbox[1, ])+x.bmp,
-         y = max(basemap.Info@bbox[2, ])-y.bmp,
-         bty="o",y.intersp=0.75,x.intersp=0.75,
-         xjust= 0,
-         yjust=0.5,
-         pch=legend.df$symbol, pt.cex=legend.df$ptSizer,
-         pt.lwd=0.6,
-         pt.bg =legend.df$colcode,
-         col ='black'
-       )
+      legend(
+        title = plot.field.pretty,
+        legend = legend.df2$categdesc,
+        x= leg.x,
+        y = leg.y,
+        bty="o",y.intersp=0.75,x.intersp=0.75,
+        xjust= 0,
+        yjust=0.5,
+        pch=legend.df2$symbol, pt.cex=legend.df2$ptSizer,
+        pt.lwd=0.6,
+        pt.bg =legend.df2$categcol,
+        col ='black',
+        plot = T
+      )
     }
   }
