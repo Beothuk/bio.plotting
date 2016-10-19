@@ -33,7 +33,6 @@
 #' @importFrom rgeos gIntersection
 #' @importFrom maps map
 #' @importFrom maptools map2SpatialPolygons
-#' @import mapdata
 #' @family plotting
 #' @export
 make_basemap = function(df = NULL,

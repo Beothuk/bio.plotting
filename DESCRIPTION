@@ -5,16 +5,15 @@ Authors@R: c( person("Mike", "McMahon", email="mike.mcmahon@dfo-mpo.gc.ca", role
 Description: This package facilitates the creation of basemaps in any projection.  Dataframes can also be overlain easily, displayed either generically, or as a number of discrete classes depending on the
   value of a particular field.
 Depends:
-    R (>= 3.0.0),
-    rgeos,
-    mapdata,
+    R (>= 3.0.0)
+Imports:
+    classInt,
+    grDevices,
+    graphics,
     maps,
     maptools,
-    classInt,
+    rgeos,
     sp
-Imports:
-    grDevices,
-    graphics
 Suggests:
     knitr,
     rmarkdown
