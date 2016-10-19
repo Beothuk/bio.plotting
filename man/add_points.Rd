@@ -8,7 +8,8 @@ add_points(df, basemap = NULL, lat.field = "LATITUDE",
   lon.field = "LONGITUDE", plot.field = NULL, plot.field.pretty = NULL,
   pnt.style = 21, pnt.col = "black", pnt.bg = "red", pnt.cex.min = 1,
   pnt.cex.max = 2, show.legend = TRUE, leg.pos = "topleft",
-  use.buckets = TRUE, use.colours = TRUE, bucket.style = "quantile",
+  use.buckets = TRUE, use.colours = TRUE, colour.ramp = c("#edf8b1",
+  "#7fcdbb", "#2c7fb8"), bucket.style = "quantile",
   bucket.fixed.breaks = NULL, nclasses = 3)
 }
 \arguments{
@@ -36,11 +37,13 @@ add_points(df, basemap = NULL, lat.field = "LATITUDE",
 
 \item{show.legend}{the default is \code{FALSE}.  Determines whether or not a legend will be displayed.}
 
-\item{leg.pos}{the default is \code{'topleft'}.  Determines where on the plot the legend will be displayed (if \code{show.legend=TRUE}).}
+\item{leg.pos}{the default is \code{'topleft'}.  Determines where on the plot the legend will be displayed (if \code{show.legend=TRUE}). Valid values are 'topleft','topright','bottomleft','bottomright'.}
 
 \item{use.buckets}{the default is \code{TRUE}. If \code{use.buckets = F}, all points are identical, but if \code{use.buckets = T}, data points are scaled, and the colour intensity varies according to the value of \code{plot.field}.}
 
 \item{use.colours}{the default is \code{TRUE}. If \code{use.colour = FALSE}, all points will be coloured using the value of \code{pnt.bg}.  If set to \code{TRUE}, the the intensity of the colour will also scale with the size of the markers, according to the value of \code{plot.field}.}
+
+\item{colour.ramp}{the default is \code{c("#edf8b1", "#7fcdbb", "#2c7fb8")}, which is color-blind friendly. You can use hex values, or colour names (e.g. \code{c('blue','pink')}), but there must be at least 2 colour present.}
 
 \item{bucket.style}{the default is \code{quantile} chosen style: one of "fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust", "bclust", "fisher", or "jenks"}
 

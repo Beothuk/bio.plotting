@@ -17,9 +17,10 @@
 #' @param pnt.cex.min the default is \code{1}. When \code{use.buckets = F}, this determines the size of the points, and when \code{use.buckets = T}, this determines the minimum size of the points to be drawn.
 #' @param pnt.cex.max the default is \code{2}. When \code{use.buckets = F}, this is ignored, and when \code{use.buckets = T}, this determines the maximum size of the points to be drawn.
 #' @param show.legend the default is \code{FALSE}.  Determines whether or not a legend will be displayed.
-#' @param leg.pos the default is \code{'topleft'}.  Determines where on the plot the legend will be displayed (if \code{show.legend=TRUE}).
+#' @param leg.pos the default is \code{'topleft'}.  Determines where on the plot the legend will be displayed (if \code{show.legend=TRUE}). Valid values are 'topleft','topright','bottomleft','bottomright'.
 #' @param use.buckets the default is \code{TRUE}. If \code{use.buckets = F}, all points are identical, but if \code{use.buckets = T}, data points are scaled, and the colour intensity varies according to the value of \code{plot.field}.
 #' @param use.colours the default is \code{TRUE}. If \code{use.colour = FALSE}, all points will be coloured using the value of \code{pnt.bg}.  If set to \code{TRUE}, the the intensity of the colour will also scale with the size of the markers, according to the value of \code{plot.field}.
+#' @param colour.ramp the default is \code{c("#edf8b1", "#7fcdbb", "#2c7fb8")}, which is color-blind friendly. You can use hex values, or colour names (e.g. \code{c('blue','pink')}), but there must be at least 2 colour present.
 #' @param bucket.style the default is \code{quantile} chosen style: one of "fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust", "bclust", "fisher", or "jenks"
 #' @param bucket.fixed.breaks the default is \code{NULL} if the \code{bucket.style} is set to "fixed", a vector of the desired upper ends of the desired breaks must be supplied (e.g. \code{c(2, 5, 10, 100, 500.10000, 100000)})
 #' @param nclasses the default is \code{3}. Applies only when \code{use.buckets = T}.  Determines how many "bins" to use to display the data.
@@ -28,6 +29,7 @@
 #' @importFrom sp plot
 #' @importFrom graphics plot
 #' @importFrom sp spTransform
+#' @importFrom sp CRS
 #' @importFrom sp SpatialPointsDataFrame
 #' @importFrom classInt classIntervals
 #' @importFrom classInt findColours
@@ -52,11 +54,10 @@ add_points <-
            leg.pos = 'topleft',
            use.buckets = TRUE,
            use.colours = TRUE,
+           colour.ramp = c("#edf8b1", "#7fcdbb", "#2c7fb8"),
            bucket.style = 'quantile',
            bucket.fixed.breaks = NULL,
            nclasses = 3) {
-#if (bucket.style=="fixed")stop("bucket.style = 'fixed' not yet supported")
-browser()
     if (is.null(basemap))
       basemap = make_basemap(df)
 
@@ -86,13 +87,13 @@ browser()
     if (is.null(plot.field.pretty)) plot.field.pretty=plot.field
     df.xy = df[, c(lon.field, lat.field)]
     df.sp <-
-      SpatialPointsDataFrame(
+      sp::SpatialPointsDataFrame(
         coords = df.xy,
         data = df,
-        proj4string = CRS("+init=epsg:4326")
+        proj4string = sp::CRS("+init=epsg:4326")
       )
-    df.sp.tr = spTransform(df.sp, CRS(basemap@proj4string@projargs))
-    df.sp.tr$over = over(df.sp.tr, basemap)
+    df.sp.tr = sp::spTransform(df.sp, sp::CRS(basemap@proj4string@projargs))
+    df.sp.tr$over = sp::over(df.sp.tr, basemap)
     n.invalidpts = NROW(df.sp.tr[is.na(df.sp.tr$over), ])
     df.sp.tr@data$symbol = nullsymb
 
@@ -120,7 +121,7 @@ browser()
       df.classes = as.data.frame(df.sp.tr)
       df.classes = df.classes[, c("ORD", plot.field)]
       df.classes = df.classes[!is.na(df.classes[plot.field])&(df.classes[plot.field]>0),]
-      classes = classIntervals(
+      classes = classInt::classIntervals(
         df.classes[, plot.field],
         n = nclasses,
         style = bucket.style,
@@ -128,9 +129,9 @@ browser()
         dataPrecision = 0
       )
       if (use.colours) {
-        colcode = findColours(classes, c("#edf8b1", "#7fcdbb", "#2c7fb8")) #colorblind-friendly yellow-blue
+        colcode = classInt::findColours(classes, colour.ramp) #colorblind-friendly yellow-blue
       } else{
-        colcode = findColours(classes, c(pnt.bg, pnt.bg)) #hack to use bg colour only
+        colcode = classInt::findColours(classes, c(pnt.bg, pnt.bg)) #hack to use bg colour only
       }
       #get the possible symbology values from the classes - these may not exist in the data
       symbol.df = data.frame(
@@ -144,9 +145,8 @@ browser()
       symbol.df$ptSizer = get_pnt_size(symbol.df$ptsize, pnt.cex.min, pnt.cex.max, nclasses)
 
       colour.df = data.frame(varname = classes$var,
-                             #classcol = attr(colcode, "palette"),
                              colcode,
-                             ptsize = findCols(classes))
+                             ptsize = classInt::findCols(classes))
       colour.df$ptsize = as.numeric(colour.df$ptsize)
       df.sp.tr@data = merge(df.sp.tr@data, unique(colour.df), by.x=plot.field, by.y='varname', all.x = T)
       df.sp.tr@data = df.sp.tr@data[order(df.sp.tr@data$ORD),]
@@ -172,7 +172,7 @@ browser()
     df.sp.tr@data$symbol[!is.na(df.sp.tr@data[plot.field]) & (df.sp.tr@data[plot.field]>0)] = pnt.style
     df.sp.tr@data$symbol[is.na(df.sp.tr@data[plot.field]) | (df.sp.tr@data[plot.field]==0)] = nullsymb
     df.sp.tr@data$ptSizer[is.na(df.sp.tr@data[plot.field]) | (df.sp.tr@data[plot.field]==0)]= nullsymbsize
-    plot(
+    sp::plot(
       df.sp.tr,
       col = pnt.col,
       bg = pnt.bg,
@@ -190,7 +190,7 @@ browser()
       }
 
       #create this first so we can detect height and width for placement
-      leg.scratch =   legend(
+      leg.scratch =   graphics::legend(
         title = plot.field.pretty,
         legend = legend.df2$categdesc,
         inset = 2,
@@ -217,7 +217,7 @@ browser()
         leg.x= max(basemap@bbox[1, ])-(leg.scratch$rect$w+x.bmp)
         leg.y =  min(basemap@bbox[2, ])+(1.5*y.bmp)
       }
-      legend(
+      graphics::legend(
         title = plot.field.pretty,
         legend = legend.df2$categdesc,
         x= leg.x,
