@@ -24,6 +24,7 @@
 #' @param bucket.style the default is \code{quantile} chosen style: one of "fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust", "bclust", "fisher", or "jenks"
 #' @param bucket.fixed.breaks the default is \code{NULL} if the \code{bucket.style} is set to "fixed", a vector of the desired upper ends of the desired breaks must be supplied (e.g. \code{c(2, 5, 10, 100, 500.10000, 100000)})
 #' @param nclasses the default is \code{3}. Applies only when \code{use.buckets = T}.  Determines how many "bins" to use to display the data.
+#' @param save.plot the default is \code{FALSE}.  If FALSE, the plot is displayed, if TRUE, it is saved to the working directory as a bio.plotting.png.
 #' @return NULL, but notifies the user of how many positions lay outside of the map boundaries.
 #' @importFrom sp over
 #' @importFrom sp plot
@@ -57,7 +58,12 @@ add_points <-
            colour.ramp = c("#edf8b1", "#7fcdbb", "#2c7fb8"),
            bucket.style = 'quantile',
            bucket.fixed.breaks = NULL,
-           nclasses = 3) {
+           nclasses = 3,
+           save.plot = FALSE) {
+    if (save.plot) {
+      plot.new()
+      png('bio.plotting.png', width = 800, height=800)
+    }
     if (is.null(basemap))
       basemap = make_basemap(df)
 
@@ -68,8 +74,14 @@ add_points <-
       return(pnt.cex.min + (((origpt * pnt.cex.min) - pnt.cex.min) * ((pnt.cex.max - pnt.cex.min) / (nclasses - 1))))
     }
 
-    #still no plot field?  use an existing field, but don't symbolize by it
-    if (is.null(plot.field) | (! plot.field %in% colnames(df))) {
+    cangroup=TRUE
+    
+    if (is.null(plot.field)) {
+      cangroup = FALSE
+    } else {
+      if (! plot.field %in% colnames(df)) cangroup = FALSE
+    }
+    if (!cangroup){
       if (use.buckets == TRUE)
         cat(
 "There's a problem symbolizing the data by a plot.field.  Either you didn't identify a field, or you
@@ -173,6 +185,7 @@ In the meantime, plotting generically...\n"
     df.sp.tr@data$symbol[!is.na(df.sp.tr@data[plot.field]) & (df.sp.tr@data[plot.field]>0)] = pnt.style
     df.sp.tr@data$symbol[is.na(df.sp.tr@data[plot.field]) | (df.sp.tr@data[plot.field]==0)] = nullsymb
     df.sp.tr@data$ptSizer[is.na(df.sp.tr@data[plot.field]) | (df.sp.tr@data[plot.field]==0)]= nullsymbsize
+
     sp::plot(
       df.sp.tr,
       col = pnt.col,
@@ -233,4 +246,5 @@ In the meantime, plotting generically...\n"
         plot = T
       )
     }
+    if (save.plot) dev.off()
   }

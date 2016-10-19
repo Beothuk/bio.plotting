@@ -10,7 +10,7 @@ add_points(df, basemap = NULL, lat.field = "LATITUDE",
   pnt.cex.max = 2, show.legend = TRUE, leg.pos = "topleft",
   use.buckets = TRUE, use.colours = TRUE, colour.ramp = c("#edf8b1",
   "#7fcdbb", "#2c7fb8"), bucket.style = "quantile",
-  bucket.fixed.breaks = NULL, nclasses = 3)
+  bucket.fixed.breaks = NULL, nclasses = 3, save.plot = FALSE)
 }
 \arguments{
 \item{df}{the dataframe to be plotted}
@@ -50,6 +50,8 @@ add_points(df, basemap = NULL, lat.field = "LATITUDE",
 \item{bucket.fixed.breaks}{the default is \code{NULL} if the \code{bucket.style} is set to "fixed", a vector of the desired upper ends of the desired breaks must be supplied (e.g. \code{c(2, 5, 10, 100, 500.10000, 100000)})}
 
 \item{nclasses}{the default is \code{3}. Applies only when \code{use.buckets = T}.  Determines how many "bins" to use to display the data.}
+
+\item{save.plot}{the default is \code{FALSE}.  If FALSE, the plot is displayed, if TRUE, it is saved to the working directory as a bio.plotting.png.}
 }
 \value{
 NULL, but notifies the user of how many positions lay outside of the map boundaries.
