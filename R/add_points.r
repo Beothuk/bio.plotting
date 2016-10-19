@@ -69,11 +69,12 @@ add_points <-
     }
 
     #still no plot field?  use an existing field, but don't symbolize by it
-    if (is.null(plot.field)) {
+    if (is.null(plot.field) | (! plot.field %in% colnames(df))) {
       if (use.buckets == TRUE)
         cat(
-          "You set use.buckets=TRUE, but didn't indicate a field to symbolize.  To avoid this, please set a
-          valid field to plot.field.  In the meantime, plotting generically...\n"
+"There's a problem symbolizing the data by a plot.field.  Either you didn't identify a field, or you
+wrote a fieldname that doesn't exist.  To avoid this, please set a valid field to plot.field.
+In the meantime, plotting generically...\n"
         )
       plot.field = lat.field
       plot.field.pretty = "<no plot field>"
