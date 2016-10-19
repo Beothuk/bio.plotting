@@ -2,6 +2,7 @@
 
 export(add_points)
 export(make_basemap)
+import(mapdata)
 importFrom(classInt,classIntervals)
 importFrom(classInt,findColours)
 importFrom(classInt,findCols)

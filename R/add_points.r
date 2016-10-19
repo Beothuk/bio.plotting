@@ -56,7 +56,7 @@ add_points <-
            bucket.fixed.breaks = NULL,
            nclasses = 3) {
 #if (bucket.style=="fixed")stop("bucket.style = 'fixed' not yet supported")
-
+browser()
     if (is.null(basemap))
       basemap = make_basemap(df)
 

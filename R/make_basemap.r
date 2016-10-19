@@ -33,6 +33,7 @@
 #' @importFrom rgeos gIntersection
 #' @importFrom maps map
 #' @importFrom maptools map2SpatialPolygons
+#' @import mapdata
 #' @family plotting
 #' @export
 make_basemap = function(df = NULL,
@@ -76,12 +77,11 @@ make_basemap = function(df = NULL,
                             x.limits = round(c((min(df$LONGITUDE)-(0.5*x.maj)), (max(df$LONGITUDE)+(0.5*x.maj)))/ x.maj) * x.maj
                             y.limits = round(c((min(df$LATITUDE)-(0.5*y.maj)), (max(df$LATITUDE)+(0.5*y.maj))) / y.maj) * y.maj
                           }
-
                           limits = data.frame(X = x.limits, Y = y.limits)
-                          coordinates(limits) = c("X", "Y")
-                          proj4string(limits) = CRS(crs.in)
+                          sp::coordinates(limits) = c("X", "Y")
+                          sp::proj4string(limits) = sp::CRS(crs.in)
 
-                          boundbox = SpatialPolygons(list(Polygons(list(Polygon(
+                          boundbox = sp::SpatialPolygons(list(sp::Polygons(list(sp::Polygon(
                             cbind(
                               xx = c(
                                 max(limits$X),
@@ -96,9 +96,9 @@ make_basemap = function(df = NULL,
                             )
                           )),
                           ID = "bb")),
-                          proj4string = CRS(crs.in))
-                          boundbox.pr = spTransform(boundbox, crs.out)
-                          boundbox2 = SpatialPolygons(list(Polygons(list(Polygon(
+                          proj4string = sp::CRS(crs.in))
+                          boundbox.pr = sp::spTransform(boundbox, crs.out)
+                          boundbox2 = sp::SpatialPolygons(list(sp::Polygons(list(sp::Polygon(
                             cbind(
                               xx = c(
                                 max(limits$X) + x.min,
@@ -113,22 +113,22 @@ make_basemap = function(df = NULL,
                             )
                           )),
                           ID = "bb2")),
-                          proj4string = CRS(crs.in))
-                          boundbox2.pr = spTransform(boundbox2, crs.out)
-                          the.grid = gridat(
+                          proj4string = sp::CRS(crs.in))
+                          boundbox2.pr = sp::spTransform(boundbox2, crs.out)
+                          the.grid = sp::gridat(
                             boundbox,
                             easts = seq(boundbox@"bbox"[1], boundbox@"bbox"[3], by = x.maj),
                             norths = seq(boundbox@"bbox"[2], boundbox@"bbox"[4], by = y.maj)
                           )
-                          grid.pr = spTransform(the.grid, CRS(crs.out))
-                          these.gridlines = gridlines(
+                          grid.pr = sp::spTransform(the.grid, sp::CRS(crs.out))
+                          these.gridlines = sp::gridlines(
                             boundbox,
                             easts = seq(boundbox@"bbox"[1], boundbox@"bbox"[3], by = x.min),
                             norths = seq(boundbox@"bbox"[2], boundbox@"bbox"[4], by = y.min)
                           )
-                          these.gridlines.pr = spTransform(these.gridlines, CRS(crs.out))
+                          these.gridlines.pr = sp::spTransform(these.gridlines, sp::CRS(crs.out))
 
-                          coastline = map(
+                          coastline = maps::map(
                             "worldHires",
                             regions = c("Canada", "USA", "France", "Greenland"),
                             xlim = x.limits,
@@ -139,13 +139,13 @@ make_basemap = function(df = NULL,
                             resolution = 0
                           )
                           #
-                          coastline.sp = map2SpatialPolygons(coastline,
+                          coastline.sp = maptools::map2SpatialPolygons(coastline,
                                                              IDs = coastline$names,
-                                                             proj4string = CRS(crs.in))
-                          coastline.sp = spTransform(coastline.sp, CRS(crs.out))
-                          coastline.sp.clip = gIntersection(gBuffer(coastline.sp, byid = TRUE, width =
+                                                             proj4string = sp::CRS(crs.in))
+                          coastline.sp = sp::spTransform(coastline.sp, sp::CRS(crs.out))
+                          coastline.sp.clip = rgeos::gIntersection(rgeos::gBuffer(coastline.sp, byid = TRUE, width =
                                                                       0),
-                                                            spTransform(boundbox, CRS(crs.out)))
+                                                            sp::spTransform(boundbox, sp::CRS(crs.out)))
 
                           par(
                             mar = c(1, 1, 1, 1),
@@ -178,7 +178,7 @@ make_basemap = function(df = NULL,
                             add = T
                           )
                           text(
-                            coordinates(grid.pr),
+                            sp::coordinates(grid.pr),
                             pos = grid.pr$pos,
                             labels = parse(text = as.character(the.grid$labels)),
                             offset = 0.2,
