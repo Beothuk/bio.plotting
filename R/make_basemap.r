@@ -15,22 +15,9 @@
 #' @note Bathymetry will be added to this in the near future, and the function call will be modified to include a flag that will indicate
 #' whether or not it should be plotted.
 #' @importFrom grDevices xy.coords
-#' @importFrom graphics text
-#' @importFrom graphics par
-#' @importFrom graphics plot.default
-#' @importFrom sp CRS
-#' @importFrom sp gridlines
-#' @importFrom sp gridat
-#' @importFrom sp is.projected
-#' @importFrom sp coordinates
-#' @importFrom sp coordinates<-
-#' @importFrom sp proj4string<-
-#' @importFrom sp spTransform
-#' @importFrom sp SpatialPolygons
-#' @importFrom sp Polygon
-#' @importFrom sp Polygons
-#' @importFrom rgeos gBuffer
-#' @importFrom rgeos gIntersection
+#' @importFrom graphics text par plot.default
+#' @importFrom sp CRS gridlines gridat is.projected coordinates coordinates<- proj4string<- spTransform SpatialPolygons Polygon Polygons
+#' @importFrom rgeos gBuffer gIntersection
 #' @importFrom maps map
 #' @importFrom maptools map2SpatialPolygons
 #' @import mapdata

@@ -19,23 +19,17 @@
 #' @param show.legend the default is \code{FALSE}.  Determines whether or not a legend will be displayed.
 #' @param leg.pos the default is \code{'topleft'}.  Determines where on the plot the legend will be displayed (if \code{show.legend=TRUE}). Valid values are 'topleft','topright','bottomleft','bottomright'.
 #' @param use.buckets the default is \code{TRUE}. If \code{use.buckets = F}, all points are identical, but if \code{use.buckets = T}, data points are scaled, and the colour intensity varies according to the value of \code{plot.field}.
-#' @param use.colours the default is \code{TRUE}. If \code{use.colour = FALSE}, all points will be coloured using the value of \code{pnt.bg}.  If set to \code{TRUE}, the the intensity of the colour will also scale with the size of the markers, according to the value of \code{plot.field}.
+#' @param use.colour.ramp the default is \code{TRUE}. If \code{use.colour = FALSE}, all points will be coloured using the value of \code{pnt.bg}.  If set to \code{TRUE}, the the intensity of the colour will also scale with the size of the markers, according to the value of \code{plot.field}.
 #' @param colour.ramp the default is \code{c("#edf8b1", "#7fcdbb", "#2c7fb8")}, which is color-blind friendly. You can use hex values, or colour names (e.g. \code{c('blue','pink')}), but there must be at least 2 colour present.
-#' @param bucket.style the default is \code{quantile} chosen style: one of "fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust", "bclust", "fisher", or "jenks"
-#' @param bucket.fixed.breaks the default is \code{NULL} if the \code{bucket.style} is set to "fixed", a vector of the desired upper ends of the desired breaks must be supplied (e.g. \code{c(2, 5, 10, 100, 500.10000, 100000)})
+#' @param bucket.style the default is \code{fixed} chosen style: one of "fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust", "bclust", "fisher", or "jenks"
+#' @param bucket.fixed.breaks the default is \code{c(1,100,1000,100000)} if the \code{bucket.style} is set to "fixed", a vector of the desired upper ends of the desired breaks must be supplied (e.g. \code{c(2, 5, 10, 100, 500.10000, 100000)})
 #' @param nclasses the default is \code{3}. Applies only when \code{use.buckets = T}.  Determines how many "bins" to use to display the data.
 #' @param save.plot the default is \code{FALSE}.  If FALSE, the plot is displayed, if TRUE, it is saved to the working directory as a bio.plotting.png.
 #' @return NULL, but notifies the user of how many positions lay outside of the map boundaries.
-#' @importFrom sp over
-#' @importFrom sp plot
-#' @importFrom graphics plot
-#' @importFrom sp spTransform
-#' @importFrom sp CRS
-#' @importFrom sp SpatialPointsDataFrame
-#' @importFrom classInt classIntervals
-#' @importFrom classInt findColours
-#' @importFrom classInt findCols
-#' @importFrom graphics legend
+#' @importFrom sp CRS over plot spTransform SpatialPointsDataFrame
+#' @importFrom graphics plot legend plot.new
+#' @importFrom classInt classIntervals findColours findCols
+#' @importFrom grDevices dev.off png
 #' @family plotting
 #' @author  Mike McMahon, \email{Mike.McMahon@@dfo-mpo.gc.ca}
 #' @export
@@ -54,10 +48,10 @@ add_points <-
            show.legend = TRUE,
            leg.pos = 'topleft',
            use.buckets = TRUE,
-           use.colours = TRUE,
+           use.colour.ramp = TRUE,
            colour.ramp = c("#edf8b1", "#7fcdbb", "#2c7fb8"),
-           bucket.style = 'quantile',
-           bucket.fixed.breaks = NULL,
+           bucket.style = 'fixed',
+           bucket.fixed.breaks = c(1,100,1000,100000),
            nclasses = 3,
            save.plot = FALSE) {
     if (save.plot) {
@@ -75,7 +69,7 @@ add_points <-
     }
 
     cangroup=TRUE
-    
+
     if (is.null(plot.field)) {
       cangroup = FALSE
     } else {
@@ -141,7 +135,7 @@ In the meantime, plotting generically...\n"
         fixedBreaks = bucket.fixed.breaks,
         dataPrecision = 0
       )
-      if (use.colours) {
+      if (use.colour.ramp) {
         colcode = classInt::findColours(classes, colour.ramp) #colorblind-friendly yellow-blue
       } else{
         colcode = classInt::findColours(classes, c(pnt.bg, pnt.bg)) #hack to use bg colour only
@@ -154,6 +148,8 @@ In the meantime, plotting generically...\n"
         categdesc = names(attr(colcode, "table")),
         categcol = attr(colcode, "palette")
       )
+      symbol.df$categdesc = gsub(",","-",symbol.df$categdesc)
+
 
       symbol.df$ptSizer = get_pnt_size(symbol.df$ptsize, pnt.cex.min, pnt.cex.max, nclasses)
 

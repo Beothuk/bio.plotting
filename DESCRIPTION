@@ -8,6 +8,7 @@ Depends:
     R (>= 3.0.0),
     mapdata
 Imports:
+    bio.datawrangling,
     classInt,
     grDevices,
     graphics,
