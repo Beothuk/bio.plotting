@@ -22,3 +22,6 @@ vignettes/*.pdf
 .httr-oauth
 .Rproj.user
 *.Rproj
+
+#confirm with Jae that bathy data is shareable
+*.RData

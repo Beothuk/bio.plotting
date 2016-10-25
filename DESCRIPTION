@@ -1,12 +1,13 @@
 Package: bio.plotting
 Title: Simple tools for creating maps and quickly plotting data
-Version: 1.0
+Version: 0.99
 Authors@R: c( person("Mike", "McMahon", email="mike.mcmahon@dfo-mpo.gc.ca", role=c("aut", "cre")) )
 Description: This package facilitates the creation of basemaps in any projection.  Dataframes can also be overlain easily, displayed either generically, or as a number of discrete classes depending on the
   value of a particular field.
 Depends:
     R (>= 3.0.0),
-    mapdata
+    mapdata,
+    rgeos
 Imports:
     bio.datawrangling,
     classInt,
@@ -14,7 +15,7 @@ Imports:
     graphics,
     maps,
     maptools,
-    rgeos,
+    methods,
     sp
 Suggests:
     knitr,
