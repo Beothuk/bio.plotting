@@ -34,6 +34,7 @@ Additionally, the output projection of the plot can be specified (e.g. \code{"+i
 depending on the data. Check \code{\link[sp]{CRS-class}} for more options.
 }
 \seealso{
-Other plotting: \code{\link{add_points}}
+Other plotting: \code{\link{add_points}},
+  \code{\link{df_qc_spatial}}
 }
 

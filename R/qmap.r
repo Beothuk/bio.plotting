@@ -8,12 +8,24 @@
 #' @author  Mike McMahon, \email{Mike.McMahon@@dfo-mpo.gc.ca}
 #' @importFrom bio.datawrangling summarize_catches
 #' @export
-qmap <- function(db, save.plot=F){
-  if (db=='obs'){
-    plot.field.db = 'EST_COMBINED_WT'
-  }else if (db=='rv'){
-      plot.field.db='TOTNO'
-    }
-  df= bio.datawrangling::summarize_catches(db, all.details = FALSE)
-  add_points(df, plot.field = plot.field.db, save.plot=save.plot)
+qmap <- function(df=NULL, save.plot=F){
+
+psi = read_mind()
+db = psi[1]
+plot.field.db = psi[2]
+
+#check if df looks like an aggregate, if so, change plot.fields
+  
+  if (is.null(df)) {
+    df= bio.datawrangling::summarize_catches(db, all.details = FALSE)
+  }
+  if (plot.field.db %in% colnames(df)) {
+    basemap = add_points(df, plot.field = plot.field.db, save.plot=save.plot)
+  }else{
+    #maybe it's aggregated data?  Try appending ".SUM"
+    plot.field.db = paste0(plot.field.db,".SUM")
+    basemap = add_points(df, plot.field = plot.field.db, save.plot=save.plot)
+  }
+  
+return(basemap)
 }

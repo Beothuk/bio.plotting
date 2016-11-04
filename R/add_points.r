@@ -51,15 +51,18 @@ add_points <-
            use.colour.ramp = TRUE,
            colour.ramp = c("#edf8b1", "#7fcdbb", "#2c7fb8"),
            bucket.style = 'fixed',
-           bucket.fixed.breaks = c(1,100,1000,100000),
+           bucket.fixed.breaks = c(1,100,500,1000,100000),
            nclasses = 3,
            save.plot = FALSE) {
     if (save.plot) {
       plot.new()
       png('bio.plotting.png', width = 800, height=800)
     }
-    if (is.null(basemap))
-      basemap = make_basemap(df)
+
+    df2 = df_qc_spatial(df)
+    cat(paste0("\nDropped ",nrow(df) - nrow(df2)," records where the coordinates were invalid.\n"))
+    df =df2
+    if (is.null(basemap)) basemap = make_basemap(df)
 
     nullsymb = 3
     nullsymbsize = pnt.cex.min/2.5
@@ -89,7 +92,8 @@ In the meantime, plotting generically...\n"
                               symbol = pnt.style,
                               ptSizer = pnt.cex.min,
                               categcol = pnt.bg)
-
+    }else{
+      
     }
     if (is.null(plot.field.pretty)) plot.field.pretty=plot.field
     df.xy = df[, c(lon.field, lat.field)]
@@ -197,6 +201,8 @@ In the meantime, plotting generically...\n"
       if (any(df.sp.tr@data$symbol ==nullsymb)){
         nullrow = data.frame(symbol=nullsymb, categdesc = "null", ptSizer= nullsymbsize, categcol="#000000")
         legend.df2 = do.call("rbind", list(nullrow, legend.df))
+      } else{
+        legend.df2 = legend.df
       }
 
       #create this first so we can detect height and width for placement
@@ -243,4 +249,5 @@ In the meantime, plotting generically...\n"
       )
     }
     if (save.plot) dev.off()
+    return(basemap)
   }

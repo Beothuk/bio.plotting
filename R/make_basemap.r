@@ -35,13 +35,17 @@ make_basemap = function(df = NULL,
                         # known.areas = c('Gully', 'St_Ann', 'Vazella_Emerald', 'Vazella_Sambro', 'NE_Channel', 'Musquash'),
                         # get.detailed = F
 )
+  
 {
   crs.in = "+init=epsg:4326"
   if (!is.null(df)) {
+    df2 = df_qc_spatial(df)
+    cat(paste0("\nDropped ",nrow(df) - nrow(df2)," records where the coordinates were invalid."))
+    df = df2
     x.limits = range(df$LONGITUDE)
     y.limits = range(df$LATITUDE)
   }
-
+  
   if (diff(y.limits) <= 1) {
     #tiny map
     y.maj = 0.25
@@ -66,6 +70,7 @@ make_basemap = function(df = NULL,
   }
 
   if (!is.null(df)) {
+
     #find range, pad it by amount determined above, and round to nice value
     x.limits = round(c((min(df$LONGITUDE)-(0.5*x.maj)), (max(df$LONGITUDE)+(0.5*x.maj)))/ x.maj) * x.maj
     y.limits = round(c((min(df$LATITUDE)-(0.5*y.maj)), (max(df$LATITUDE)+(0.5*y.maj))) / y.maj) * y.maj

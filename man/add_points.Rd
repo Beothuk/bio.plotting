@@ -10,7 +10,7 @@ add_points(df, basemap = NULL, lat.field = "LATITUDE",
   pnt.cex.max = 2, show.legend = TRUE, leg.pos = "topleft",
   use.buckets = TRUE, use.colour.ramp = TRUE, colour.ramp = c("#edf8b1",
   "#7fcdbb", "#2c7fb8"), bucket.style = "fixed", bucket.fixed.breaks = c(1,
-  100, 1000, 100000), nclasses = 3, save.plot = FALSE)
+  100, 500, 1000, 100000), nclasses = 3, save.plot = FALSE)
 }
 \arguments{
 \item{df}{the dataframe to be plotted}
@@ -68,6 +68,7 @@ field, and the colour and size of the points varies with the values in \code{plo
 Mike McMahon, \email{Mike.McMahon@dfo-mpo.gc.ca}
 }
 \seealso{
-Other plotting: \code{\link{make_basemap}}
+Other plotting: \code{\link{df_qc_spatial}},
+  \code{\link{make_basemap}}
 }
 

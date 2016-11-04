@@ -4,13 +4,13 @@
 \alias{qmap}
 \title{qmap}
 \usage{
-qmap(db, save.plot = F)
+qmap(df = NULL, save.plot = F)
 }
 \arguments{
+\item{save.plot}{the default is \code{FALSE}.  If FALSE, the plot is displayed, if TRUE, it is saved to the working directory as a bio.plotting.png.}
+
 \item{db}{This identifies the dataset you want to plot.  Valid values are 'obs'
 (observer) and 'rv' (groundfish/research survey).}
-
-\item{save.plot}{the default is \code{FALSE}.  If FALSE, the plot is displayed, if TRUE, it is saved to the working directory as a bio.plotting.png.}
 }
 \value{
 list of the filters that were applied to generate the remaining dataset
