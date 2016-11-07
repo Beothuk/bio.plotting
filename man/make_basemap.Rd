@@ -5,7 +5,7 @@
 \title{make_basemap}
 \usage{
 make_basemap(df = NULL, crs.out = "+init=epsg:2220", x.limits = c(-70,
-  -54), y.limits = c(41, 50), add.isobaths = FALSE)
+  -54), y.limits = c(41, 50))
 }
 \arguments{
 \item{df}{default is \code{NULL}.  You can optionally send a dataframe with values for \code{LATITUDE} and \code{LONGITUDE} to this function, which can be have the plot extent match
@@ -18,10 +18,6 @@ bounding longitudes.}
 
 \item{y.limits}{default is \code{c(41, 50)} but an appropriate value would be in the form of  is \code{c(41,50)}. These are the default
 bounding latitudes for extent.}
-
-\item{add.isobaths}{default is \code{FALSE}.  If TRUE, adds the following isobaths (m) to the plot:
-"10"   "20"   "50"   "75"   "100"  "200"  "250"  "300"  "400"  "500"  "600"  "700"  "750"  "800"
-"900"  "1000" "1200" "1250" "1400" "1500" "1750" "2000" "2500" "3000" "4000" "5000"}
 }
 \value{
 a SpatialPolygons object corresponding to the bounding box of the plot.

@@ -25,3 +25,5 @@ vignettes/*.pdf
 
 #confirm with Jae that bathy data is shareable
 *.RData
+
+inst/

@@ -11,9 +11,6 @@
 #' bounding longitudes.
 #' @param y.limits default is \code{c(41, 50)} but an appropriate value would be in the form of  is \code{c(41,50)}. These are the default
 #' bounding latitudes for extent.
-#' @param add.isobaths default is \code{FALSE}.  If TRUE, adds the following isobaths (m) to the plot:
-#'  "10"   "20"   "50"   "75"   "100"  "200"  "250"  "300"  "400"  "500"  "600"  "700"  "750"  "800"
-#'  "900"  "1000" "1200" "1250" "1400" "1500" "1750" "2000" "2500" "3000" "4000" "5000"
 #' @return a SpatialPolygons object corresponding to the bounding box of the plot.
 #' @importFrom grDevices xy.coords colorRampPalette
 #' @importFrom graphics text par plot.default
@@ -29,13 +26,9 @@
 make_basemap = function(df = NULL,
                         crs.out = '+init=epsg:2220',
                         x.limits = c(-70, -54),
-                        y.limits = c(41, 50),
-                        add.isobaths = FALSE
-                        # ,
-                        # known.areas = c('Gully', 'St_Ann', 'Vazella_Emerald', 'Vazella_Sambro', 'NE_Channel', 'Musquash'),
-                        # get.detailed = F
+                        y.limits = c(41, 50)
 )
-  
+
 {
   crs.in = "+init=epsg:4326"
   if (!is.null(df)) {
@@ -45,7 +38,7 @@ make_basemap = function(df = NULL,
     x.limits = range(df$LONGITUDE)
     y.limits = range(df$LATITUDE)
   }
-  
+
   if (diff(y.limits) <= 1) {
     #tiny map
     y.maj = 0.25
@@ -155,20 +148,7 @@ make_basemap = function(df = NULL,
                                              #sp::spTransform(boundbox, sp::CRS(crs.out))
                                              )
   }
-
-  if (add.isobaths){
-    data(isobaths)
-    index.isobaths = row.names(isobaths)
-    colfunc <- colorRampPalette(c("lightskyblue1", "skyblue3", "steelblue4"))
-    isobath.cols = colfunc(length(index.isobaths)) #make colours for all possible isobaths
-    col.df= data.frame(index.isobaths,isobath.cols)
-    isobaths.pr = sp::spTransform(isobaths, sp::CRS(crs.out))
-    isobath.clip = rgeos::gIntersection(rgeos::gBuffer(isobaths.pr, byid = TRUE, width = 0.01),
-                                        boundbox.pr, byid = TRUE, drop_lower_td = TRUE)
-    isobath.clip = as(isobath.clip, 'SpatialLines')
-    used.isobaths = gsub(" bb", "", row.names(isobath.clip))
-    used.isobath.cols = col.df[col.df$index.isobaths %in% used.isobaths,]$isobath.cols
-  }
+#add_isobaths1?
   par(
     mar = c(1, 1, 1, 1),
     xaxs = "i",
@@ -180,18 +160,8 @@ make_basemap = function(df = NULL,
            border = "transparent",
            add = F,
            lwd = 1) #add transparent boundbox first to ensure all data shown
-  if (add.isobaths) {
-    if (!is.null(isobath.clip)) {
-      sp::plot(isobath.clip, add=T, col=used.isobath.cols)
-    }
-  }
-  # if (known.areas[1] != ""){
-  #     plot.areas=get_known_areas(known.areas, get.detailed, crs.out)
-  #     plot.areas.clip = rgeos::gIntersection(rgeos::gBuffer(plot.areas, byid = TRUE, width = 0),  boundbox.pr
-  #                                            #sp::spTransform(boundbox, sp::CRS(crs.out))
-  #                                            )
-  #       sp::plot(plot.areas.clip, border = "grey72", add=TRUE)
-  #  }
+#add_isobaths2?
+#known_areas?
   if(exists("coastline.sp.clip")){
   if (class(coastline.sp.clip)=="SpatialPolygons"){
     sp::plot(

@@ -9,7 +9,6 @@ Depends:
     mapdata,
     rgeos
 Imports:
-    bio.datawrangling,
     classInt,
     grDevices,
     graphics,
@@ -17,10 +16,8 @@ Imports:
     maptools,
     methods,
     sp
-Suggests:
-    knitr,
-    rmarkdown
-VignetteBuilder: knitr
+Enhances:
+    bio.datawrangling
 License: MIT + file LICENSE
 LazyData: true
 URL: https://github.com/Beothuk/bio.plotting/
