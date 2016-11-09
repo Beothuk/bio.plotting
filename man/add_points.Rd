@@ -6,11 +6,13 @@
 \usage{
 add_points(df, basemap = NULL, lat.field = "LATITUDE",
   lon.field = "LONGITUDE", plot.field = NULL, plot.field.pretty = NULL,
-  pnt.style = 21, pnt.col = "black", pnt.bg = "red", pnt.cex.min = 1,
-  pnt.cex.max = 2, show.legend = TRUE, leg.pos = "topleft",
-  use.buckets = TRUE, use.colour.ramp = TRUE, colour.ramp = c("#edf8b1",
-  "#7fcdbb", "#2c7fb8"), bucket.style = "fixed", bucket.fixed.breaks = c(1,
-  100, 500, 1000, 100000), nclasses = 3, save.plot = FALSE)
+  pnt.style = 21, pnt.fill = "#1874CD", pnt.outline = "#333333",
+  pnt.cex.min = 1, pnt.cex.max = 2, show.legend = TRUE,
+  leg.pos = "topleft", bin.data = TRUE, use.colour.ramp = TRUE,
+  colour.ramp = c("#edf8b1", "#7fcdbb", "#2c7fb8"), bin.style = "fixed",
+  fixed.breaks.bins = c(1, 4, 32, 256, 2045, 16336, 130496, 1042432, 8327186),
+  trim.fixed.breaks = TRUE, trim.legend = TRUE, nclasses = 3,
+  save.plot = FALSE)
 }
 \arguments{
 \item{df}{the dataframe to be plotted}
@@ -23,45 +25,49 @@ add_points(df, basemap = NULL, lat.field = "LATITUDE",
 
 \item{plot.field}{the default is \code{'EST_COMBINED_WT'}.  The field on which to symbolize the data.  If unspecified, the data can only be symbolized generically.}
 
-\item{plot.field.pretty}{the default is \code{NULL}.  Applies only when \code{use.buckets = F}. This is a nice name to describe \code{plot.field} which will be displayed in the legend.}
+\item{plot.field.pretty}{the default is \code{NULL}.  Applies only when \code{bin.data = F}. This is a nice name to describe \code{plot.field} which will be displayed in the legend.}
 
 \item{pnt.style}{the default is \code{21}. Determines the style of the points (any valid value for \code{pch} is acceptable).}
 
-\item{pnt.col}{the default is \code{'black'}. This determines the colour outlining the points.}
+\item{pnt.fill}{the default is \code{'black'}. This determines the colour outlining the points.}
 
-\item{pnt.bg}{the default is \code{'red'}.  Applies only when \code{show.legend = T}.  Determines the colour of the points.}
+\item{pnt.outline}{the default is \code{'red'}.  Applies only when \code{show.legend = T}.  Determines the colour of the points.}
 
-\item{pnt.cex.min}{the default is \code{1}. When \code{use.buckets = F}, this determines the size of the points, and when \code{use.buckets = T}, this determines the minimum size of the points to be drawn.}
+\item{pnt.cex.min}{the default is \code{1}. When \code{bin.data = F}, this determines the size of the points, and when \code{bin.data = T}, this determines the minimum size of the points to be drawn.}
 
-\item{pnt.cex.max}{the default is \code{2}. When \code{use.buckets = F}, this is ignored, and when \code{use.buckets = T}, this determines the maximum size of the points to be drawn.}
+\item{pnt.cex.max}{the default is \code{2}. When \code{bin.data = F}, this is ignored, and when \code{bin.data = T}, this determines the maximum size of the points to be drawn.}
 
 \item{show.legend}{the default is \code{FALSE}.  Determines whether or not a legend will be displayed.}
 
 \item{leg.pos}{the default is \code{'topleft'}.  Determines where on the plot the legend will be displayed (if \code{show.legend=TRUE}). Valid values are 'topleft','topright','bottomleft','bottomright'.}
 
-\item{use.buckets}{the default is \code{TRUE}. If \code{use.buckets = F}, all points are identical, but if \code{use.buckets = T}, data points are scaled, and the colour intensity varies according to the value of \code{plot.field}.}
+\item{bin.data}{the default is \code{TRUE}. If \code{bin.data = F}, all points are identical, but if \code{bin.data = T}, data points are scaled, and the colour intensity varies according to the value of \code{plot.field}.}
 
-\item{use.colour.ramp}{the default is \code{TRUE}. If \code{use.colour = FALSE}, all points will be coloured using the value of \code{pnt.bg}.  If set to \code{TRUE}, the the intensity of the colour will also scale with the size of the markers, according to the value of \code{plot.field}.}
+\item{use.colour.ramp}{the default is \code{TRUE}. If \code{use.colour = FALSE}, all points will be coloured using the value of \code{pnt.outline}.  If set to \code{TRUE}, the the intensity of the colour will also scale with the size of the markers, according to the value of \code{plot.field}.}
 
 \item{colour.ramp}{the default is \code{c("#edf8b1", "#7fcdbb", "#2c7fb8")}, which is color-blind friendly. You can use hex values, or colour names (e.g. \code{c('blue','pink')}), but there must be at least 2 colour present.}
 
-\item{bucket.style}{the default is \code{fixed} chosen style: one of "fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust", "bclust", "fisher", or "jenks"}
+\item{bin.style}{the default is \code{fixed} chosen style: one of "fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust", "bclust", "fisher", or "jenks"}
 
-\item{bucket.fixed.breaks}{the default is \code{c(1,100,1000,100000)} if the \code{bucket.style} is set to "fixed", a vector of the desired upper ends of the desired breaks must be supplied (e.g. \code{c(2, 5, 10, 100, 500.10000, 100000)})}
+\item{fixed.breaks.bins}{the default is \code{c(1,100,1000,100000)} if the \code{bin.style} is set to "fixed", a vector of the desired upper ends of the desired breaks must be supplied (e.g. \code{c(2, 5, 10, 100, 500.10000, 100000)})}
 
-\item{nclasses}{the default is \code{3}. Applies only when \code{use.buckets = T}.  Determines how many "bins" to use to display the data.}
+\item{trim.fixed.breaks}{the default is \code{TRUE}  In cases where the \code{fixed.breaks.bins} vector extends beyond the data values, this parameter removes unused categories so that the largest values receive the maximum symbology (i.e. largest pnt.cex.max and extreme colour.ramp colour)}
+
+\item{trim.legend}{the default is \code{TRUE} This ensure that only values that exist in the data are shown in the legend.}
+
+\item{nclasses}{the default is \code{3}. Applies only when \code{bin.data = T}.  Determines how many "bins" to use to display the data.}
 
 \item{save.plot}{the default is \code{FALSE}.  If FALSE, the plot is displayed, if TRUE, it is saved to the working directory as a bio.plotting.png.}
 }
 \value{
-NULL, but notifies the user of how many positions lay outside of the map boundaries.
+a SpatialPolygons object  (identifying the boundaries and projection of an existing plot).  It also notifies the user of how many positions lay outside of the map boundaries.
 }
 \description{
 This function adds points to an existing plot.  The advantage over \code{points(...)} is that by including a map object as
 input, it will automatically reproject the points, and trim them such that only positions that fall within the map boundaries are shown.
 The user is notified of how many positions lay outside of the map boundaries.
 Additionally, the input data can either be symbolized generically (i.e. one style), or it can classify the points according to the values
-stored in a field identified by the user using the flag \code{use.buckets}.  If \code{use.buckets=T}, data is symbolized by a selected
+stored in a field identified by the user using the flag \code{bin.data}.  If \code{bin.data=T}, data is symbolized by a selected
 field, and the colour and size of the points varies with the values in \code{plot.field}.
 }
 \author{

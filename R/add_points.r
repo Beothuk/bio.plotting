@@ -3,29 +3,31 @@
 #' input, it will automatically reproject the points, and trim them such that only positions that fall within the map boundaries are shown.
 #' The user is notified of how many positions lay outside of the map boundaries.
 #' Additionally, the input data can either be symbolized generically (i.e. one style), or it can classify the points according to the values
-#' stored in a field identified by the user using the flag \code{use.buckets}.  If \code{use.buckets=T}, data is symbolized by a selected
+#' stored in a field identified by the user using the flag \code{bin.data}.  If \code{bin.data=T}, data is symbolized by a selected
 #' field, and the colour and size of the points varies with the values in \code{plot.field}.
 #' @param df the dataframe to be plotted
 #' @param basemap a SpatialPolygons object (identifying the boundaries and projection of an existing plot). If none is provided, a default \code{make_basemap()} object will be used. object
 #' @param lat.field the default is \code{'LATITUDE'}. The name of the field holding latitude values (in decimal degrees).
 #' @param lon.field the default is \code{'LONGITUDE'}.  The name of the field holding longitude values (in decimal degrees).
 #' @param plot.field the default is \code{'EST_COMBINED_WT'}.  The field on which to symbolize the data.  If unspecified, the data can only be symbolized generically.
-#' @param plot.field.pretty the default is \code{NULL}.  Applies only when \code{use.buckets = F}. This is a nice name to describe \code{plot.field} which will be displayed in the legend.
+#' @param plot.field.pretty the default is \code{NULL}.  Applies only when \code{bin.data = F}. This is a nice name to describe \code{plot.field} which will be displayed in the legend.
 #' @param pnt.style the default is \code{21}. Determines the style of the points (any valid value for \code{pch} is acceptable).
-#' @param pnt.col the default is \code{'black'}. This determines the colour outlining the points.
-#' @param pnt.bg the default is \code{'red'}.  Applies only when \code{show.legend = T}.  Determines the colour of the points.
-#' @param pnt.cex.min the default is \code{1}. When \code{use.buckets = F}, this determines the size of the points, and when \code{use.buckets = T}, this determines the minimum size of the points to be drawn.
-#' @param pnt.cex.max the default is \code{2}. When \code{use.buckets = F}, this is ignored, and when \code{use.buckets = T}, this determines the maximum size of the points to be drawn.
+#' @param pnt.fill the default is \code{'black'}. This determines the colour outlining the points.
+#' @param pnt.outline the default is \code{'red'}.  Applies only when \code{show.legend = T}.  Determines the colour of the points.
+#' @param pnt.cex.min the default is \code{1}. When \code{bin.data = F}, this determines the size of the points, and when \code{bin.data = T}, this determines the minimum size of the points to be drawn.
+#' @param pnt.cex.max the default is \code{2}. When \code{bin.data = F}, this is ignored, and when \code{bin.data = T}, this determines the maximum size of the points to be drawn.
 #' @param show.legend the default is \code{FALSE}.  Determines whether or not a legend will be displayed.
 #' @param leg.pos the default is \code{'topleft'}.  Determines where on the plot the legend will be displayed (if \code{show.legend=TRUE}). Valid values are 'topleft','topright','bottomleft','bottomright'.
-#' @param use.buckets the default is \code{TRUE}. If \code{use.buckets = F}, all points are identical, but if \code{use.buckets = T}, data points are scaled, and the colour intensity varies according to the value of \code{plot.field}.
-#' @param use.colour.ramp the default is \code{TRUE}. If \code{use.colour = FALSE}, all points will be coloured using the value of \code{pnt.bg}.  If set to \code{TRUE}, the the intensity of the colour will also scale with the size of the markers, according to the value of \code{plot.field}.
+#' @param bin.data the default is \code{TRUE}. If \code{bin.data = F}, all points are identical, but if \code{bin.data = T}, data points are scaled, and the colour intensity varies according to the value of \code{plot.field}.
+#' @param use.colour.ramp the default is \code{TRUE}. If \code{use.colour = FALSE}, all points will be coloured using the value of \code{pnt.outline}.  If set to \code{TRUE}, the the intensity of the colour will also scale with the size of the markers, according to the value of \code{plot.field}.
 #' @param colour.ramp the default is \code{c("#edf8b1", "#7fcdbb", "#2c7fb8")}, which is color-blind friendly. You can use hex values, or colour names (e.g. \code{c('blue','pink')}), but there must be at least 2 colour present.
-#' @param bucket.style the default is \code{fixed} chosen style: one of "fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust", "bclust", "fisher", or "jenks"
-#' @param bucket.fixed.breaks the default is \code{c(1,100,1000,100000)} if the \code{bucket.style} is set to "fixed", a vector of the desired upper ends of the desired breaks must be supplied (e.g. \code{c(2, 5, 10, 100, 500.10000, 100000)})
-#' @param nclasses the default is \code{3}. Applies only when \code{use.buckets = T}.  Determines how many "bins" to use to display the data.
+#' @param bin.style the default is \code{fixed} chosen style: one of "fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust", "bclust", "fisher", or "jenks"
+#' @param fixed.breaks.bins the default is \code{c(1,100,1000,100000)} if the \code{bin.style} is set to "fixed", a vector of the desired upper ends of the desired breaks must be supplied (e.g. \code{c(2, 5, 10, 100, 500.10000, 100000)})
+#' @param trim.fixed.breaks the default is \code{TRUE}  In cases where the \code{fixed.breaks.bins} vector extends beyond the data values, this parameter removes unused categories so that the largest values receive the maximum symbology (i.e. largest pnt.cex.max and extreme colour.ramp colour)
+#' @param trim.legend the default is \code{TRUE} This ensure that only values that exist in the data are shown in the legend.
+#' @param nclasses the default is \code{3}. Applies only when \code{bin.data = T}.  Determines how many "bins" to use to display the data.
 #' @param save.plot the default is \code{FALSE}.  If FALSE, the plot is displayed, if TRUE, it is saved to the working directory as a bio.plotting.png.
-#' @return NULL, but notifies the user of how many positions lay outside of the map boundaries.
+#' @return a SpatialPolygons object  (identifying the boundaries and projection of an existing plot).  It also notifies the user of how many positions lay outside of the map boundaries.
 #' @importFrom sp CRS over plot spTransform SpatialPointsDataFrame
 #' @importFrom graphics plot legend plot.new
 #' @importFrom classInt classIntervals findColours findCols
@@ -41,174 +43,179 @@ add_points <-
            plot.field = NULL,
            plot.field.pretty = NULL,
            pnt.style = 21,
-           pnt.col = 'black',
-           pnt.bg = 'red',
+           pnt.fill = '#1874CD',
+           pnt.outline = '#333333',
            pnt.cex.min = 1,
            pnt.cex.max = 2,
            show.legend = TRUE,
            leg.pos = 'topleft',
-           use.buckets = TRUE,
+           bin.data = TRUE,
            use.colour.ramp = TRUE,
            colour.ramp = c("#edf8b1", "#7fcdbb", "#2c7fb8"),
-           bucket.style = 'fixed',
-           bucket.fixed.breaks = c(1,100,500,1000,100000),
+           bin.style = 'fixed',
+           fixed.breaks.bins = c(1, 4, 32, 256, 2045, 16336, 130496, 1042432, 8327186),
+           trim.fixed.breaks = TRUE,
+           trim.legend = TRUE,
            nclasses = 3,
            save.plot = FALSE) {
-    if (save.plot) {
-      plot.new()
-      png('bio.plotting.png', width = 800, height=800)
-    }
-
-    df2 = df_qc_spatial(df)
-    cat(paste0("\nDropped ",nrow(df) - nrow(df2)," records where the coordinates were invalid.\n"))
-    df =df2
-    if (is.null(basemap)) basemap = make_basemap(df)
-
-    nullsymb = 3
-    nullsymbsize = pnt.cex.min/2.5
+    #null symbology below
+    nullPtType = 3
+    nullPtSize = pnt.cex.min/2.5
+    nullSymbCol = "#ABABAB"
+    nullSymbOutline = "#ABABAB"
 
     get_pnt_size <- function(origpt, pnt.cex.min = pnt.cex.min, pnt.cex.max = pnt.cex.max, nclasses = nclasses){
       return(pnt.cex.min + (((origpt * pnt.cex.min) - pnt.cex.min) * ((pnt.cex.max - pnt.cex.min) / (nclasses - 1))))
     }
 
-    cangroup=TRUE
+    if (save.plot) {
+      plot.new()
+      png('bio.plotting.png', width = 800, height=800)
+    }
 
-    if (is.null(plot.field)) {
-      cangroup = FALSE
-    } else {
-      if (! plot.field %in% colnames(df)) cangroup = FALSE
-    }
-    if (!cangroup){
-      if (use.buckets == TRUE)
-        cat(
-"There's a problem symbolizing the data by a plot.field.  Either you didn't identify a field, or you
+    cangroup = FALSE
+
+    df = df_qc_spatial(df)
+
+    if (is.null(basemap)) basemap = make_basemap(df)
+
+    #no plot field provided -
+    if (is.null(plot.field) | !(plot.field %in% colnames(df))) {
+      if (requireNamespace("bio.datawrangling",quietly = FALSE)) {
+        plot.field = bio.datawrangling::read_mind()[2]
+        plot.field.pretty = plot.field
+        cangroup = TRUE
+        cat("\nNo plot.field was indicated, assuming ",plot.field)
+      }else{
+        cangroup = FALSE
+        if (bin.data == TRUE){
+          #no plot.field determined, but want bins
+          cat(
+"\nThere's a problem symbolizing the data by a plot.field.  Either you didn't identify a field, or you
 wrote a fieldname that doesn't exist.  To avoid this, please set a valid field to plot.field.
-In the meantime, plotting generically...\n"
-        )
-      plot.field = lat.field
-      plot.field.pretty = "<no plot field>"
-      use.buckets = FALSE
-      legend.df2 = data.frame(categdesc = "data",
-                              symbol = pnt.style,
-                              ptSizer = pnt.cex.min,
-                              categcol = pnt.bg)
-    }else{
-      
+In the meantime, plotting generically..."
+          )
+          plot.field = lat.field
+          plot.field.pretty = "<no plot field>"
+          bin.data = FALSE
+        }
+      }
+    } else {
+      cangroup = TRUE
     }
-    if (is.null(plot.field.pretty)) plot.field.pretty=plot.field
-    df.xy = df[, c(lon.field, lat.field)]
+    #we've decided whether or not we can group the data, so...
+
+    u.values = NROW(unique(df[!is.na(df[plot.field]), ][plot.field]))
+    if ((u.values > 3) & (u.values > nclasses) & (bin.data == TRUE)) {
+      cangroup = TRUE
+    } else{
+      cangroup = FALSE
+      if (bin.data == TRUE) cat("\nToo little data to bin - using generic symbolization")
+    }
+    #create spatial data and project it
+    df.sp = df[, c(lon.field, lat.field)]
     df.sp <-
       sp::SpatialPointsDataFrame(
-        coords = df.xy,
+        coords = df.sp,
         data = df,
         proj4string = sp::CRS("+init=epsg:4326")
       )
-    df.sp.tr = sp::spTransform(df.sp, sp::CRS(basemap@proj4string@projargs))
-    df.sp.tr$over = sp::over(df.sp.tr, basemap)
-    n.invalidpts = NROW(df.sp.tr[is.na(df.sp.tr$over), ])
-    df.sp.tr@data$symbol = nullsymb
-
-    n.invalidpts = NROW(df.sp.tr[is.na(df.sp.tr$over), ])
-    #unique values of plot field
-    u.values = NROW(unique(df.sp.tr@data[!is.na(df.sp.tr@data[plot.field]), ][plot.field]))
+    rm(df)
+    df.sp = sp::spTransform(df.sp, sp::CRS(basemap@proj4string@projargs))
+    #check if points are contained by basemap
+    df.sp$over = sp::over(df.sp, basemap)
+    n.invalidpts = NROW(df.sp[is.na(df.sp$over), ])
     if (n.invalidpts > 0)
-      print(paste0(
-        n.invalidpts,
-        " of ",
-        NROW(df.sp.tr),
-        " positions lie outside of the map"
-      ))
-    df.sp.tr = df.sp.tr[!is.na(df.sp.tr$over), ]
-    df.sp.tr$over = NULL
-    if (u.values > 3 & u.values > nclasses & use.buckets == TRUE) {
-      use.buckets = TRUE
-    } else{
-      if (use.buckets == TRUE)
-        print("Too little data to bucket - using generic symbolization")
-      use.buckets = FALSE
-    }
-    if (use.buckets) {
-      df.sp.tr$ORD = seq.int(nrow(df.sp.tr))
-      df.classes = as.data.frame(df.sp.tr)
+      cat(paste0("\n", n.invalidpts, " of ", NROW(df.sp), " positions lie outside of the map"))
+    df.sp = df.sp[!is.na(df.sp$over), ]
+    df.sp$over = NULL
+
+    if (is.null(plot.field.pretty)) plot.field.pretty=plot.field
+    #set defaults
+
+    if (cangroup == FALSE | bin.data == FALSE){
+      #want/must plot generically
+      df.sp@data$ptType = pnt.style
+      df.sp@data$ptSize = pnt.cex.min
+      df.sp@data$ptFill = pnt.fill
+      df.sp@data$ptOutline = pnt.outline
+      legend.df = data.frame(categdesc = "data",
+                             ptType = pnt.style,
+                             ptSize = pnt.cex.min,
+                             ptFill = pnt.fill,
+                             ptOutline = pnt.outline)
+    }else{
+      df.sp$ORD = seq.int(nrow(df.sp))
+      df.classes = as.data.frame(df.sp)
       df.classes = df.classes[, c("ORD", plot.field)]
       df.classes = df.classes[!is.na(df.classes[plot.field])&(df.classes[plot.field]>0),]
+
+      if (bin.style == 'fixed' & trim.fixed.breaks == TRUE){
+        min.bin = min(fixed.breaks.bins[fixed.breaks.bins>max(df.classes[, plot.field])])
+        fixed.breaks.bins = fixed.breaks.bins[fixed.breaks.bins <= min.bin]
+      }
       classes = classInt::classIntervals(
         df.classes[, plot.field],
         n = nclasses,
-        style = bucket.style,
-        fixedBreaks = bucket.fixed.breaks,
+        style = bin.style,
+        fixedBreaks = fixed.breaks.bins,
         dataPrecision = 0
       )
       if (use.colour.ramp) {
-        colcode = classInt::findColours(classes, colour.ramp) #colorblind-friendly yellow-blue
-      } else{
-        colcode = classInt::findColours(classes, c(pnt.bg, pnt.bg)) #hack to use bg colour only
-      }
+        ptFill = classInt::findColours(classes, colour.ramp) #colorblind-friendly yellow-blue
+       } else{
+         ptFill = classInt::findColours(classes, c(pnt.fill, pnt.fill)) #hack to use bg colour only
+       }
       #get the possible symbology values from the classes - these may not exist in the data
       symbol.df = data.frame(
-        ptsize = seq(1,length(classes$brks)-1),
-        symbol = rep(pnt.style,length(classes$brks)-1),
+        ptType = rep(pnt.style,length(classes$brks)-1),
+        ptSize = get_pnt_size(seq(1,length(classes$brks)-1), pnt.cex.min, pnt.cex.max, nclasses),
+        ptFill = attr(ptFill, "palette"),
+        ptOutline = pnt.outline,
         categ = classes$brks[1:length(classes$brks)-1],
-        categdesc = names(attr(colcode, "table")),
-        categcol = attr(colcode, "palette")
+        categdesc = gsub(",","-",names(attr(ptFill, "table")))
       )
-      symbol.df$categdesc = gsub(",","-",symbol.df$categdesc)
-
-
-      symbol.df$ptSizer = get_pnt_size(symbol.df$ptsize, pnt.cex.min, pnt.cex.max, nclasses)
-
       colour.df = data.frame(varname = classes$var,
-                             colcode,
-                             ptsize = classInt::findCols(classes))
-      colour.df$ptsize = as.numeric(colour.df$ptsize)
-      df.sp.tr@data = merge(df.sp.tr@data, unique(colour.df), by.x=plot.field, by.y='varname', all.x = T)
-      df.sp.tr@data = df.sp.tr@data[order(df.sp.tr@data$ORD),]
+                             ptFill,
+                             ptSize = classInt::findCols(classes),
+                             ptType = pnt.style,
+                             ptOutline = pnt.outline)
+      #colour.df$ptsize = as.numeric(colour.df$ptsize)
+      df.sp@data = merge(df.sp@data, unique(colour.df), by.x=plot.field, by.y='varname', all.x = T)
+      df.sp@data = df.sp@data[order(df.sp@data$ORD),]
+      df.sp@data$ptSize = get_pnt_size(df.sp@data$ptSize, pnt.cex.min, pnt.cex.max, nclasses)
 
-      df.sp.tr@data$ptSizer = get_pnt_size(df.sp.tr@data$ptsize, pnt.cex.min, pnt.cex.max, nclasses)
+      #add nulls
+      df.sp@data$ptType[is.na(df.sp@data[plot.field]) | (df.sp@data[plot.field]==0)] = nullPtType
+      df.sp@data$ptSize[is.na(df.sp@data[plot.field]) | (df.sp@data[plot.field]==0)]= nullPtSize
+      df.sp@data$ptFill[is.na(df.sp@data[plot.field]) | (df.sp@data[plot.field]==0)]= nullSymbCol
+      df.sp@data$ptOutline[is.na(df.sp@data[plot.field]) | (df.sp@data[plot.field]==0)]= nullSymbOutline
 
-      pnt.cex = df.sp.tr@data$ptSizer
-      pnt.bg = df.sp.tr@data$colcode
-      leg.data = symbol.df[c("ptSizer", "categcol")]
-      leg.pnt.bg = leg.data$colcode
-      leg.pt.cex = leg.data$ptSizer
-    }else{
-      symbol.df = data.frame(
-        ptSizer = pnt.cex.min,
-        symbol = pnt.style,
-        #categ = classes$brks[1:length(classes$brks)-1],
-        categdesc = "data",
-        categcol = pnt.bg
-      )
-      df.sp.tr@data$ptSizer = pnt.cex.min
+      #assemble legend values, add nulls
+      legend.df= symbol.df[c("categdesc","ptType","ptSize", "ptFill", "ptOutline")]
+      legend.df = rbind.data.frame(c("null", nullPtType, nullPtSize, nullSymbCol, nullSymbOutline),legend.df)
+      legend.df$ptType = as.numeric(legend.df$ptType)
+      legend.df$ptSize = as.numeric(legend.df$ptSize)
+      legend.df = legend.df[order(legend.df$ptType, legend.df$ptSize),]
+
     }
-
-    df.sp.tr@data$symbol[!is.na(df.sp.tr@data[plot.field]) & (df.sp.tr@data[plot.field]>0)] = pnt.style
-    df.sp.tr@data$symbol[is.na(df.sp.tr@data[plot.field]) | (df.sp.tr@data[plot.field]==0)] = nullsymb
-    df.sp.tr@data$ptSizer[is.na(df.sp.tr@data[plot.field]) | (df.sp.tr@data[plot.field]==0)]= nullsymbsize
+    #only keep legend entries that exist in data
+    if (trim.legend) legend.df = legend.df[legend.df$ptSize %in% df.sp@data$ptSize,]
 
     sp::plot(
-      df.sp.tr,
-      col = pnt.col,
-      bg = pnt.bg,
-      pch = df.sp.tr@data$symbol,
-      cex = df.sp.tr@data$ptSizer,
+      df.sp,
+      col = df.sp@data$ptOutline,
+      bg = df.sp@data$ptFill,
+      pch = df.sp@data$ptType,
+      cex = df.sp@data$ptSize,
       add = T
     )
+
     if (show.legend) {
-      legend.df = symbol.df[c("symbol","categdesc", "ptSizer", "categcol")]
-      legend.df=legend.df[order(legend.df[,c('symbol')],legend.df[,c('ptSizer')]),]
-
-      if (any(df.sp.tr@data$symbol ==nullsymb)){
-        nullrow = data.frame(symbol=nullsymb, categdesc = "null", ptSizer= nullsymbsize, categcol="#000000")
-        legend.df2 = do.call("rbind", list(nullrow, legend.df))
-      } else{
-        legend.df2 = legend.df
-      }
-
       #create this first so we can detect height and width for placement
       leg.scratch =   graphics::legend(
         title = plot.field.pretty,
-        legend = legend.df2$categdesc,
+        legend = legend.df$categdesc,
         inset = 2,
         x=  max(basemap@bbox[1, ]),
         y = max(basemap@bbox[2, ]),
@@ -216,6 +223,10 @@ In the meantime, plotting generically...\n"
         xjust= 0,
         yjust=0.5,
         pt.lwd=0.6,
+        pch=legend.df$ptType,
+        pt.cex=legend.df$ptSize,
+        pt.bg =legend.df$ptFill,
+        col =legend.df$ptOutline,
         plot = F
       )
       y.bmp = diff(basemap@bbox[2, ])*0.125
@@ -235,16 +246,18 @@ In the meantime, plotting generically...\n"
       }
       graphics::legend(
         title = plot.field.pretty,
-        legend = legend.df2$categdesc,
+        legend = legend.df$categdesc,
+        inset = 2,
         x= leg.x,
         y = leg.y,
         bty="o",y.intersp=0.75,x.intersp=0.75,
         xjust= 0,
         yjust=0.5,
-        pch=legend.df2$symbol, pt.cex=legend.df2$ptSizer,
+        pch=legend.df$ptType,
+        pt.cex=legend.df$ptSize,
         pt.lwd=0.6,
-        pt.bg =legend.df2$categcol,
-        col ='black',
+        pt.bg =legend.df$ptFill,
+        col =legend.df$ptOutline,
         plot = T
       )
     }
