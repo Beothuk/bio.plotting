@@ -63,7 +63,6 @@ make_basemap = function(df = NULL,
   }
 
   if (!is.null(df)) {
-
     #find range, pad it by amount determined above, and round to nice value
     x.limits = round(c((min(df$LONGITUDE)-(0.5*x.maj)), (max(df$LONGITUDE)+(0.5*x.maj)))/ x.maj) * x.maj
     y.limits = round(c((min(df$LATITUDE)-(0.5*y.maj)), (max(df$LATITUDE)+(0.5*y.maj))) / y.maj) * y.maj
@@ -106,6 +105,11 @@ make_basemap = function(df = NULL,
   ID = "bb2")),
   proj4string = sp::CRS(crs.in))
   boundbox2.pr = sp::spTransform(boundbox2, crs.out)
+  #force tiny gridlines if necessary
+  if (length(seq(boundbox@"bbox"[1], boundbox@"bbox"[3], by = x.maj)) <= 2) x.maj = x.maj/5
+  if (length(seq(boundbox@"bbox"[2], boundbox@"bbox"[4], by = y.maj)) <= 2) y.maj = y.maj/5
+
+
   the.grid = sp::gridat(
     boundbox,
     easts = seq(boundbox@"bbox"[1], boundbox@"bbox"[3], by = x.maj),
