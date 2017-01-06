@@ -4,10 +4,15 @@
 \alias{df_qc_spatial}
 \title{df_qc_spatial}
 \usage{
-df_qc_spatial(df, return.bad = FALSE)
+df_qc_spatial(df, lat.field = "LATITUDE", lon.field = "LONGITUDE",
+  return.bad = FALSE)
 }
 \arguments{
 \item{df}{the dataframe to be cleaned}
+
+\item{lat.field}{default is \code{LATITUDE}.  The field in the dataframe holding the latitudes}
+
+\item{lon.field}{default is \code{LONGITUDE}.  The field in the dataframe holding the longitudes}
 
 \item{return.bad}{the default is \code{FALSE}.  Normally, only the plottable points are returned.
 If TRUE, only the rejected points are returned.}

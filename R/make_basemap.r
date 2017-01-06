@@ -6,6 +6,8 @@
 #' depending on the data. Check \code{\link[sp]{CRS-class}} for more options.
 #' @param df default is \code{NULL}.  You can optionally send a dataframe with values for \code{LATITUDE} and \code{LONGITUDE} to this function, which can be have the plot extent match
 #' the data.
+#' @param lat.field default is \code{LATITUDE}.  The field in the dataframe holding the latitudes
+#' @param lon.field default is \code{LONGITUDE}.  The field in the dataframe holding the longitudes
 #' @param crs.out default is \code{'+init=epsg:2220'} (UTM Zone 20 N).  This is the desired projection of the final plot.
 #' @param x.limits default is \code{c(-70, -54)} but an appropriate value would be in the form of \code{c(-70,-54)}. These are the default
 #' bounding longitudes.
@@ -24,6 +26,8 @@
 #' @family plotting
 #' @export
 make_basemap = function(df = NULL,
+                        lat.field = "LATITUDE",
+                        lon.field = "LONGITUDE",
                         crs.out = '+init=epsg:2220',
                         x.limits = c(-70, -54),
                         y.limits = c(41, 50)
@@ -32,11 +36,11 @@ make_basemap = function(df = NULL,
 {
   crs.in = "+init=epsg:4326"
   if (!is.null(df)) {
-    df2 = df_qc_spatial(df)
+    df2 = df_qc_spatial(df, lat.field, lon.field)
     cat(paste0("\nDropped ",nrow(df) - nrow(df2)," records where the coordinates were invalid."))
     df = df2
-    x.limits = range(df$LONGITUDE)
-    y.limits = range(df$LATITUDE)
+    x.limits = range(df[lon.field])
+    y.limits = range(df[lat.field])
   }
 
   if (diff(y.limits) <= 1) {
@@ -64,8 +68,8 @@ make_basemap = function(df = NULL,
 
   if (!is.null(df)) {
     #find range, pad it by amount determined above, and round to nice value
-    x.limits = round(c((min(df$LONGITUDE)-(0.5*x.maj)), (max(df$LONGITUDE)+(0.5*x.maj)))/ x.maj) * x.maj
-    y.limits = round(c((min(df$LATITUDE)-(0.5*y.maj)), (max(df$LATITUDE)+(0.5*y.maj))) / y.maj) * y.maj
+    x.limits = round(c((min(df[lon.field])-(0.5*x.maj)), (max(df[lon.field])+(0.5*x.maj)))/ x.maj) * x.maj
+    y.limits = round(c((min(df[lat.field])-(0.5*y.maj)), (max(df[lat.field])+(0.5*y.maj))) / y.maj) * y.maj
   }
   limits = data.frame(X = x.limits, Y = y.limits)
   sp::coordinates(limits) = c("X", "Y")

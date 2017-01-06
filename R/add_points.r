@@ -64,17 +64,14 @@ add_points <-
     get_pnt_size <- function(origpt, pnt.cex.min = pnt.cex.min, pnt.cex.max = pnt.cex.max, nbins = nbins){
       return(pnt.cex.min + (((origpt * pnt.cex.min) - pnt.cex.min) * ((pnt.cex.max - pnt.cex.min) / (nbins - 1))))
     }
-
     if (save.plot) {
       plot.new()
       png('bio.plotting.png', width = 800, height=800)
     }
-
     cangroup = FALSE
-    df = df_qc_spatial(df)
-
-    if (is.null(basemap)) basemap = make_basemap(df)
-
+    df = df_qc_spatial(df, lat.field, lon.field)
+    if (is.null(basemap)) basemap = make_basemap(df, lat.field=lat.field, lon.field=lon.field)
+    
     #no plot field provided -
     if (is.null(plot.field)) plot.field = 'noneprovided'
     if (plot.field == 'noneprovided' | !(plot.field %in% colnames(df))) {
@@ -101,7 +98,6 @@ In the meantime, plotting generically..."
       cangroup = TRUE
     }
     #we've decided whether or not we can group the data, so...
-
     u.values = NROW(unique(df[!is.na(df[plot.field]), ][plot.field]))
     if ((u.values > 3) & (u.values > nbins) & (!is.null(bin.style))) {
       cangroup = TRUE
@@ -191,20 +187,22 @@ In the meantime, plotting generically..."
       df.sp@data = df.sp@data[order(df.sp@data$ORD),]
       df.sp@data$ptSize = get_pnt_size(df.sp@data$ptSize, pnt.cex.min, pnt.cex.max, nbins)
       if (size.ramp == FALSE) df.sp@data$ptSize = pnt.cex.min
-      #add nulls
-      df.sp@data$ptType[is.na(df.sp@data[plot.field]) | (df.sp@data[plot.field]==0)] = nullPtType
-      df.sp@data$ptSize[is.na(df.sp@data[plot.field]) | (df.sp@data[plot.field]==0)]= nullPtSize
-      df.sp@data$ptFill[is.na(df.sp@data[plot.field]) | (df.sp@data[plot.field]==0)]= nullSymbCol
-      df.sp@data$ptOutline[is.na(df.sp@data[plot.field]) | (df.sp@data[plot.field]==0)]= nullSymbOutline
+
 
       #assemble legend values, add nulls
       legend.df= symbol.df[c("categdesc","ptType","ptSize", "ptFill", "ptOutline")]
-      legend.df = rbind.data.frame(c("null", nullPtType, nullPtSize, nullSymbCol, nullSymbOutline),legend.df)
-      legend.df$ptType = as.numeric(legend.df$ptType)
-      legend.df$ptSize = as.numeric(legend.df$ptSize)
-      legend.df = legend.df[order(legend.df$ptType, legend.df$ptSize),]
+      
 
-    }
+    }     
+    legend.df = rbind.data.frame(c("null", nullPtType, nullPtSize, nullSymbCol, nullSymbOutline),legend.df)
+    legend.df$ptType = as.numeric(legend.df$ptType)
+    legend.df$ptSize = as.numeric(legend.df$ptSize)
+    legend.df = legend.df[order(legend.df$ptType, legend.df$ptSize),]
+    #add nulls - this was previously only in the cangroup section
+    df.sp@data$ptType[is.na(df.sp@data[plot.field]) | (df.sp@data[plot.field]==0)] = nullPtType
+    df.sp@data$ptSize[is.na(df.sp@data[plot.field]) | (df.sp@data[plot.field]==0)]= nullPtSize
+    df.sp@data$ptFill[is.na(df.sp@data[plot.field]) | (df.sp@data[plot.field]==0)]= nullSymbCol
+    df.sp@data$ptOutline[is.na(df.sp@data[plot.field]) | (df.sp@data[plot.field]==0)]= nullSymbOutline
     #only keep legend entries that exist in data
     if (trim.legend) legend.df = legend.df[legend.df$ptSize %in% df.sp@data$ptSize,]
 
@@ -216,7 +214,6 @@ In the meantime, plotting generically..."
       cex = df.sp@data$ptSize,
       add = T
     )
-
     if (show.legend) {
       #create this first so we can detect height and width for placement
       leg.scratch =   graphics::legend(

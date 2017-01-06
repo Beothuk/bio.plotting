@@ -4,12 +4,17 @@
 \alias{make_basemap}
 \title{make_basemap}
 \usage{
-make_basemap(df = NULL, crs.out = "+init=epsg:2220", x.limits = c(-70,
-  -54), y.limits = c(41, 50))
+make_basemap(df = NULL, lat.field = "LATITUDE", lon.field = "LONGITUDE",
+  crs.out = "+init=epsg:2220", x.limits = c(-70, -54), y.limits = c(41,
+  50))
 }
 \arguments{
 \item{df}{default is \code{NULL}.  You can optionally send a dataframe with values for \code{LATITUDE} and \code{LONGITUDE} to this function, which can be have the plot extent match
 the data.}
+
+\item{lat.field}{default is \code{LATITUDE}.  The field in the dataframe holding the latitudes}
+
+\item{lon.field}{default is \code{LONGITUDE}.  The field in the dataframe holding the longitudes}
 
 \item{crs.out}{default is \code{'+init=epsg:2220'} (UTM Zone 20 N).  This is the desired projection of the final plot.}
 
