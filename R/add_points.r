@@ -55,6 +55,7 @@ add_points <-
            trim.legend = TRUE,
            nbins = 3,
            save.plot = FALSE) {
+    
     #null symbology below
     nullPtType = 3
     nullPtSize = 1/2.5
