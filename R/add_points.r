@@ -77,10 +77,10 @@ add_points <-
     if (is.null(plot.field)) plot.field = 'noneprovided'
     if (plot.field == 'noneprovided' | !(plot.field %in% colnames(df))) {
       if (requireNamespace("bio.datawrangling",quietly = FALSE)) {
-        plot.field = bio.datawrangling::read_mind()[2]
-        if (is.null(plot.field.pretty)) plot.field.pretty = plot.field
-        cangroup = TRUE
-        cat("\nNo plot.field was indicated, assuming ",plot.field)
+        # plot.field = bio.datawrangling::read_mind()[2]
+        # if (is.null(plot.field.pretty)) plot.field.pretty = plot.field
+        # cangroup = TRUE
+        # cat("\nNo plot.field was indicated, assuming ",plot.field)
       }else{
         cangroup = FALSE
         if (!is.null(bin.style)){
